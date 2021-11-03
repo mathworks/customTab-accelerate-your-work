@@ -115,11 +115,21 @@ end
 
 for i = 1:numel(inport_list)
     inport_name = get_param(inport_list{i}, 'Name');
+    inport_pos  = get_param(inport_list{i}, 'Position');
     port_handle = get_param(inport_list{i}, 'PortHandles');
     line_handle = get_param(port_handle.Outport, 'Line');
     set_param(line_handle, 'Name', inport_name);
 
-    delete_block(inport_list{i});   
+    sc_block_name = [harness_name, '/SC_', num2str(i)];
+    add_block(['simulink/Signal Attributes/', ...
+        'Signal', newline, 'Conversion'], ...
+        sc_block_name);
+
+    delete_block(inport_list{i});
+
+    set_param(sc_block_name, 'Position', inport_pos);
+
+    Simulink.sdi.markSignalForStreaming(line_handle, 'on');
 end
 
 end
