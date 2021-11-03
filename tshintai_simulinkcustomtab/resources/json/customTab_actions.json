@@ -1,0 +1,224 @@
+{
+    "version": "R2021b",
+    "entries": [
+        {
+            "type": "Action",
+            "id": "create_open_link_sldd",
+            "text": "作成 / 開く",
+            "description": "作成、リンクされたslddファイルを表示します",
+            "icon": "data_access_icon",
+            "command": "create_open_link_sldd_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "open_system_with_new_window",
+            "text": "ウィンドウで開く",
+            "description": "選択されたブロックを新規ウィンドウで開きます",
+            "icon": "flowchart_icon",
+            "command": "open_system_with_new_window_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "diff_with_latest_commit_sldd",
+            "text": "差分を見る",
+            "description": "最新コミットと今のファイルの差分を確認します",
+            "icon": "data_access_icon",
+            "command": "diff_with_latest_commit_sldd_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "open_lib_model_linked_to_blocks",
+            "text": "ライブラリを開く",
+            "description": "ブロックにリンクされたライブラリを開きます",
+            "icon": "circuit_icon",
+            "command": "open_lib_model_linked_to_blocks_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "disable_and_open_lib_block",
+            "text": "無効にして開く",
+            "description": "ライブラリリンクを無効にしてブロックを開きます",
+            "icon": "circuit_icon",
+            "command": "disable_and_open_lib_block_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "create_open_test_harness",
+            "text": "作成 / 開く",
+            "icon": "agile_icon",
+            "description": "テストハーネスを作成して開きます",
+            "command": "create_open_test_harness_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "connect_rename_log_line",
+            "text": "ポートを接続",
+            "icon": "flowchart_icon",
+            "description": "信号を自動で接続し、信号名を付け、ログ設定を行います",
+            "command": "connect_rename_log_line_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "show_line_data_types_dimensions",
+            "text": "次元 / データ型",
+            "icon": "flowchart_icon",
+            "description": "信号の次元とデータ型を表示します",
+            "command": "show_line_data_types_dimensions_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "close_delete_test_harness",
+            "text": "閉じる / 削除",
+            "icon": "agile_icon",
+            "description": "テストハーネスを閉じて削除します",
+            "command": "close_delete_test_harness_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "initialize_SDI",
+            "text": "初期化",
+            "icon": "graph_icon",
+            "description": "シミュレーションデータインスペクターを初期化します",
+            "command": "initialize_SDI_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "close_all_Simulink_windows",
+            "text": "すべて閉じる",
+            "icon": "submarine_icon",
+            "description": "開いている Simulink モデルファイルを全て閉じます",
+            "command": "close_all_Simulink_windows_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "revert_Simulink_model",
+            "text": "戻す",
+            "icon": "flowchart_icon",
+            "description": "Simulink モデルを最新コミット状態に戻します",
+            "command": "revert_Simulink_model_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "close_project",
+            "text": "PJを閉じる",
+            "icon": "submarine_icon",
+            "description": "開いているプロジェクトを閉じます",
+            "command": "close_project_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "root_run",
+            "text": "ルート実行",
+            "icon": "guaranteed-to-run_icon",
+            "description": "このモデルファイルを参照している最上位階層のモデルファイルを実行します",
+            "command": "root_run_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "match_block_size",
+            "text": "サイズを合わせる",
+            "icon": "flowchart_icon",
+            "description": "選択されたブロックのサイズを合わせます",
+            "command": "match_block_size_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "reset_color_tab",
+            "text": "色とタブを初期化",
+            "icon": "flowchart_icon",
+            "description": "モデル内のブロックの色をリセットし、タブを全て閉じます選択されたブロックのサイズを合わせます",
+            "command": "reset_model_color_and_close_tab_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "match_port_line_name",
+            "text": "信号名を伝搬",
+            "icon": "flowchart_icon",
+            "description": "モデル内の信号線とポートの名前を合わせます",
+            "command": "match_port_line_name_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "log_named_line",
+            "text": "名前付信号をログ",
+            "icon": "graph_icon",
+            "description": "モデル内の名前付き信号線をログ設定します",
+            "command": "log_named_line_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "close_and_reopen_model",
+            "text": "閉じて再度開く",
+            "icon": "submarine_icon",
+            "description": "モデルを保存せずに閉じて再度開きます",
+            "command": "close_and_reopen_model_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Icon",
+            "id": "openMathWorksWebsiteIcon",
+            "icon16": "MathWorks_icon_16.png",
+            "icon24": "MathWorks_icon_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "data_access_icon",
+            "icon16": "data-access-orange_16.png",
+            "icon24": "data-access-orange_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "flowchart_icon",
+            "icon16": "flowchart-blue_16.png",
+            "icon24": "flowchart-blue_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "circuit_icon",
+            "icon16": "circuit-orange_16.png",
+            "icon24": "circuit-orange_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "agile_icon",
+            "icon16": "agile-development-blue_16.png",
+            "icon24": "agile-development-blue_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "graph_icon",
+            "icon16": "graph-blue_16.png",
+            "icon24": "graph-blue_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "submarine_icon",
+            "icon16": "submarine-orange_16.png",
+            "icon24": "submarine-orange_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "guaranteed-to-run_icon",
+            "icon16": "ico-guaranteed-to-run-16.png",
+            "icon24": "ico-guaranteed-to-run-24.png"
+        }
+    ]
+}

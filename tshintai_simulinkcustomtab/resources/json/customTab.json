@@ -1,0 +1,194 @@
+{
+    "version": "R2021b",
+    "entries": [
+        {
+            "type": "Tab",
+            "id": "customTab",
+            "title": "ACCEL",
+            "children": [
+                {
+                    "type": "Section",
+                    "title": "SLDD",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "create_open_link_sldd"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "diff_with_latest_commit_sldd"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "モデル",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "openModelConfigParamAction"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "open_system_with_new_window"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "revert_Simulink_model"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "show_line_data_types_dimensions"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "reset_color_tab"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "match_block_size"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "connect_rename_log_line"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "match_port_line_name"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "ライブラリ",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "open_lib_model_linked_to_blocks"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "disable_and_open_lib_block"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "テストハーネス",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "create_open_test_harness"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "close_delete_test_harness"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "シミュレーション",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "root_run"
+                                }
+
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "stopSimulationAction"
+                                }
+
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "SDI",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "openSimDataInspectorAction"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "log_named_line"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "initialize_SDI"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "閉じる",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "close_and_reopen_model"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "close_all_Simulink_windows"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "close_project"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
