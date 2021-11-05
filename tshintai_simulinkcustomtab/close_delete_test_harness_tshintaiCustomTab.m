@@ -4,18 +4,21 @@ function close_delete_test_harness_tshintaiCustomTab()
 % テストハーネスではない場合、その階層にあるブロックに関連付けられている
 % テストハーネスを全て削除します。
 %%
+model_name = bdroot;
+
+%%
 try
-    isharness = get_param(gcs, 'IsHarness');
+    isharness = get_param(model_name, 'IsHarness');
     if strcmp(isharness, 'off')
 
-        find_and_delete_harness(gcs);
+        find_and_delete_harness(model_name);
 
     else
 
-        this_harness_name = gcs;
-        close_system(gcs);
+        this_harness_name = model_name;
+        close_system(model_name);
 
-        harness_list = sltest.harness.find(gcs);
+        harness_list = sltest.harness.find(bdroot);
         if isempty(harness_list)
             return;
         end
@@ -31,7 +34,7 @@ try
 
 catch
 
-    find_and_delete_harness(gcs);
+    find_and_delete_harness(model_name);
 
 end
 
