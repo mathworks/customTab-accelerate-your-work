@@ -1,15 +1,92 @@
 function connect_rename_log_line_tshintaiCustomTab()
 %% 説明
-% ブロックが選択されている場合はその選択されているブロックの中で、
-% 選択されていなければ今のモデル階層の中で、
-% 接続可能な未接続ポートの組み合わせをリスト化し、
-% 選択したポート同士を接続します。
+% ブロックや信号線の選択状態に応じて以下のどちらかの処理を行います。
+% 1. 信号線が一つだけ選択されている場合、未接続の入力ポートをリスト化し、
+%    選択したポートとその信号線を接続します。
+% 2. ブロックが選択されている場合はその選択されているブロックの中で、
+%    何も選択されていなければ今のモデル階層の中で、
+%    接続可能な未接続ポートの組み合わせをリスト化し、
+%    選択したポート同士を接続します。
 % 接続後、信号名を入力し、シミュレーションデータインスペクターに
 % ログする設定を行います。
 % ダイアログでキャンセルを入力した場合は、その場で処理を終了します。
 % ポートリストは、接続可能な未接続ポートの組み合わせが存在する限り
 % 繰り返し表示されます。
 %%
+selected_lines = find_system(gcs,...
+    'SearchDepth', 1, ...
+    'FindAll','on', ...
+    'Type','Line', ...
+    'Selected','on');
+
+if numel(selected_lines) == 1
+    connect_line_to_port(selected_lines);
+else
+    connect_block_to_block_repeatedly();
+end
+
+end
+
+function connect_line_to_port(selected_lines)
+%%
+block_list = find_system(gcs, 'SearchDepth', 1);
+if numel(block_list) < 2
+    return;
+end
+block_list = block_list(2:end);
+
+%%
+% disconnected_inport_list, disconnected_outport_listは、
+% 信号線が接続されていないポートの
+% 親ブロックの名前、ポート番号、ポートのハンドル、ポート種別を記録する。
+[disconnected_inport_list, ~] = ...
+    get_disconnected_lists(block_list);
+
+if isempty(disconnected_inport_list{1, 1})
+    return;
+end
+
+%%
+if (size(disconnected_inport_list, 1) == 1)
+    RM_indx = 1;
+else
+    disconnected_inport_text = cell(size(disconnected_inport_list, 1), 1);
+    for i = 1:numel(disconnected_inport_text)
+        block_name = strsplit(disconnected_inport_list{i, 1}, '/');
+
+        disconnected_inport_text{i} = [...
+            block_name{end}, ', Inport ', ...
+            num2str(disconnected_inport_list{i, 2})];
+    end
+
+
+    [RM_indx, tf] = listdlg( ...
+        'ListString', disconnected_inport_text, ...
+        'PromptString', {'接続するポートの組み合わせを選択してください：'}, ...
+        'ListSize', [500, 400]);
+    if ~(tf)
+        return;
+    end
+end
+
+%%
+for i = 1:numel(RM_indx)
+    % すでに未接続線（赤線）が存在している場合は、事前に削除しておく。
+    line_handle = get_param(disconnected_inport_list{RM_indx(i), 3}, 'Line');
+    if (line_handle > -0.5)
+        delete_line(line_handle);
+    end
+
+    outport_handle = get_param(selected_lines, 'SrcPortHandle');
+
+    add_line(gcs, outport_handle, disconnected_inport_list{RM_indx(i), 3}, ...
+        'autorouting','smart');
+end
+
+end
+
+function connect_block_to_block_repeatedly()
+
 while(1)
     %%
     selected_block_list = find_system(gcs, ...
@@ -23,10 +100,7 @@ while(1)
             return;
         else
             selected_block_list = selected_block_list(2:end);
-            list_num = numel(selected_block_list);
         end
-    else
-        list_num = numel(selected_block_list);
     end
 
     %%
@@ -38,48 +112,8 @@ while(1)
     % disconnected_inport_list, disconnected_outport_listは、
     % 信号線が接続されていないポートの
     % 親ブロックの名前、ポート番号、ポートのハンドル、ポート種別を記録する。
-    disconnected_inport_list = cell(1, 4);
-    disconnected_outport_list = cell(1, 4);
-
-    for i = 1:list_num
-
-        try
-            port_handle = get_param(selected_block_list{i}, 'PortHandles');
-        catch
-            continue;
-        end
-
-        % Inport, Enable, Trigger, Ifaction, Resetを合わせた
-        % 入力ポートを定義する
-        % g_inport_handleはハンドルと上記のポート種別を格納する
-        g_inport_handle = set_general_inport(port_handle);
-
-        % 入力ポート、出力ポートの数を調べる
-        inport_num = numel(g_inport_handle(:, 1));
-        outport_num = numel(port_handle.Outport);
-
-        if (inport_num == 0 && outport_num == 0)
-            continue;
-        end
-
-        port_info = get_param(selected_block_list{i}, 'PortConnectivity');
-
-        for j = 1:inport_num
-            if (port_info(j).SrcBlock < 0)
-                disconnected_inport_list = add_port_info( ...
-                    disconnected_inport_list, selected_block_list{i}, ...
-                    j, g_inport_handle{j, 1}, g_inport_handle{j, 2});
-            end
-        end
-        for j = 1:outport_num
-            if isempty(port_info(j + inport_num).DstBlock)
-                disconnected_outport_list = add_port_info( ...
-                    disconnected_outport_list, selected_block_list{i}, ...
-                    j, port_handle.Outport(j), 'Outport');
-            end
-        end
-
-    end
+    [disconnected_inport_list, disconnected_outport_list] = ...
+    get_disconnected_lists(selected_block_list);
 
     if ( isempty(disconnected_inport_list{1, 1}) || ...
             isempty(disconnected_outport_list{1, 1}) )
@@ -159,6 +193,54 @@ while(1)
 
     %%
     Simulink.sdi.markSignalForStreaming(line_handle, 'on');
+
+end
+
+end
+
+function [disconnected_inport_list, disconnected_outport_list] = ...
+    get_disconnected_lists(block_list)
+
+disconnected_inport_list = cell(1, 4);
+disconnected_outport_list = cell(1, 4);
+
+for i = 1:numel(block_list)
+
+    try
+        port_handle = get_param(block_list{i}, 'PortHandles');
+    catch
+        continue;
+    end
+
+    % Inport, Enable, Trigger, Ifaction, Resetを合わせた
+    % 入力ポートを定義する
+    % g_inport_handleはハンドルと上記のポート種別を格納する
+    g_inport_handle = set_general_inport(port_handle);
+
+    % 入力ポート、出力ポートの数を調べる
+    inport_num = numel(g_inport_handle(:, 1));
+    outport_num = numel(port_handle.Outport);
+
+    if (inport_num == 0 && outport_num == 0)
+        continue;
+    end
+
+    port_info = get_param(block_list{i}, 'PortConnectivity');
+
+    for j = 1:inport_num
+        if (port_info(j).SrcBlock < 0)
+            disconnected_inport_list = add_port_info( ...
+                disconnected_inport_list, block_list{i}, ...
+                j, g_inport_handle{j, 1}, g_inport_handle{j, 2});
+        end
+    end
+    for j = 1:outport_num
+        if isempty(port_info(j + inport_num).DstBlock)
+            disconnected_outport_list = add_port_info( ...
+                disconnected_outport_list, block_list{i}, ...
+                j, port_handle.Outport(j), 'Outport');
+        end
+    end
 
 end
 
