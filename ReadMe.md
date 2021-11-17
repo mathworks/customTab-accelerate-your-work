@@ -164,7 +164,7 @@ edit reset_model_color_and_close_tab_tshintaiCustomTab
 edit match_block_size_tshintaiCustomTab
 ```
 
-### 2.6.「ポートを接続」ボタン
+### 2.6.「信号線を接続」ボタン
 
 
 ブロックや信号線の選択状態に応じて以下のどちらかの処理を行う。

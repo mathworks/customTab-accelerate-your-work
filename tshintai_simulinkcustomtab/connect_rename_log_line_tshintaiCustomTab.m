@@ -19,10 +19,46 @@ selected_lines = find_system(gcs,...
     'Type','Line', ...
     'Selected','on');
 
+% 一つの信号線を選択していても、分岐している信号線は複数のハンドルを持つ。
+% そのため、同じ線かどうかをここで判定する。
+selected_lines = check_line_duplicated(selected_lines);
+
 if numel(selected_lines) == 1
     connect_line_to_port(selected_lines);
 else
     connect_block_to_block_repeatedly();
+end
+
+end
+
+function valid_line_handle = check_line_duplicated(selected_lines)
+
+if numel(selected_lines) < 1.5
+
+    valid_line_handle = selected_lines;
+
+else
+
+    % source_handle_listはハンドル、ハンドルの数を格納する
+    source_handle_list = cell(numel(selected_lines), 2);
+
+    for i = 1:numel(selected_lines)
+        source_handle_list{i, 1} = get_param(selected_lines(i), 'SrcPortHandle');
+        source_handle_list{i, 2} = numel(source_handle_list{i, 1});
+    end
+
+    valid_line_handle = [];
+    if max(cell2mat(source_handle_list(:, 2))) == 1
+        vec = cell2mat(source_handle_list(:, 1));
+        if max(vec - mean(vec)) < eps
+            valid_line_handle = selected_lines;
+        end
+    end
+
+    if ~isempty(valid_line_handle)
+        valid_line_handle = valid_line_handle(1);
+    end
+
 end
 
 end
@@ -81,6 +117,11 @@ for i = 1:numel(RM_indx)
 
     add_line(gcs, outport_handle, disconnected_inport_list{RM_indx(i), 3}, ...
         'autorouting','smart');
+end
+
+% 選択されている線が未接続（赤線）の場合は削除する
+if get_param(selected_lines, 'DstPortHandle') < 0
+    delete_line(selected_lines);
 end
 
 end

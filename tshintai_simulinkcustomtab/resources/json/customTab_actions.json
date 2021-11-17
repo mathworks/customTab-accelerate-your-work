@@ -58,7 +58,7 @@
         {
             "type": "Action",
             "id": "connect_rename_log_line",
-            "text": "ポートを接続",
+            "text": "信号線を接続",
             "icon": "flowchart_icon",
             "description": "信号を自動で接続し、信号名を付け、ログ設定を行います",
             "command": "connect_rename_log_line_tshintaiCustomTab",
