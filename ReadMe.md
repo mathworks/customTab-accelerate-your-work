@@ -5,6 +5,11 @@
 R2021b にて実装された「カスタムタブ」機能を用いて、日々の Simulink モデリング業務を効率化することができる。本コンテンツでは、その一例を示す。
 
 
+
+
+カスタムタブの基本的な使い方については[こちら](https://blogs.mathworks.com/japan-community/2021/12/23/customtoolstrip/)のブログ記事を参照。
+
+
 # 必要なツールボックス
 
    -  MATLAB® 
