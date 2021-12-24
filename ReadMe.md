@@ -206,6 +206,22 @@ edit connect_rename_log_line_tshintaiCustomTab
 edit match_port_line_name_tshintaiCustomTab
 ```
 
+### 2.8.「ポートで揃える」ボタン
+
+
+選択したブロック同士のポート位置が横一列に揃うようにブロックの上下位置を並べ替える。また、同じ線で接続されたブロックグループを探し、そのグループごとに並べる。
+
+
+
+
+合わせる位置は、選択されたブロックの終端ブロックの接続先ポート位置である。
+
+
+
+```matlab:Code
+edit arrange_port_position_tshintaiCustomTab
+```
+
 ## 3.ライブラリ セクション
 ### 3.1.「ライブラリを開く」ボタン
 

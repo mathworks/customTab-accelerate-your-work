@@ -13,15 +13,7 @@ function connect_rename_log_line_tshintaiCustomTab()
 % ポートリストは、接続可能な未接続ポートの組み合わせが存在する限り
 % 繰り返し表示されます。
 %%
-selected_lines = find_system(gcs,...
-    'SearchDepth', 1, ...
-    'FindAll','on', ...
-    'Type','Line', ...
-    'Selected','on');
-
-% 一つの信号線を選択していても、分岐している信号線は複数のハンドルを持つ。
-% そのため、同じ線かどうかをここで判定する。
-selected_lines = check_line_duplicated(selected_lines);
+selected_lines = check_only_lines_selected;
 
 if numel(selected_lines) == 1
     connect_line_to_port(selected_lines);
@@ -31,8 +23,30 @@ end
 
 end
 
-function valid_line_handle = check_line_duplicated(selected_lines)
+function selected_lines = check_only_lines_selected()
+%%
+selected_line_list = find_system(gcs,...
+    'SearchDepth', 1, ...
+    'FindAll','on', ...
+    'Type','Line', ...
+    'Selected','on');
 
+selected_block_list = find_system(gcs, ...
+        'SearchDepth',1, ...
+        'Selected','on');
+
+if isempty(selected_block_list)
+    % 一つの信号線を選択していても、分岐している信号線は複数のハンドルを持つ。
+    % そのため、同じ線かどうかをここで判定する。
+    selected_lines = check_line_duplicated(selected_line_list);
+else
+    selected_lines = [];
+end
+
+end
+
+function valid_line_handle = check_line_duplicated(selected_lines)
+%%
 if numel(selected_lines) < 1.5
 
     valid_line_handle = selected_lines;
@@ -127,7 +141,7 @@ end
 end
 
 function connect_block_to_block_repeatedly()
-
+%%
 while(1)
     %%
     selected_block_list = find_system(gcs, ...
@@ -241,7 +255,7 @@ end
 
 function [disconnected_inport_list, disconnected_outport_list] = ...
     get_disconnected_lists(block_list)
-
+%%
 disconnected_inport_list = cell(1, 4);
 disconnected_outport_list = cell(1, 4);
 
@@ -288,7 +302,7 @@ end
 end
 
 function g_inport_handle = set_general_inport(port_handle)
-
+%%
 inport_handle_type = create_port_handle_type( ...
     port_handle.Inport, 'Inport');
 enable_handle_type = create_port_handle_type( ...
@@ -319,7 +333,7 @@ end
 
 function port_handle_type = create_port_handle_type( ...
     port_handle_vec, type)
-
+%%
 port_handle_type = cell(1, 2);
 for i = 1:numel(port_handle_vec)
     if isempty(port_handle_type{1, 1})
@@ -338,7 +352,7 @@ end
 function disconnected_port_list = add_port_info( ...
     disconnected_port_list, parent_block_name, port_num, ...
     port_handle, type)
-
+%%
 if isempty(disconnected_port_list{1, 1})
     disconnected_port_list{1, 1} = parent_block_name;
     disconnected_port_list{1, 2} = port_num;
@@ -354,4 +368,3 @@ else
 end
 
 end
-

@@ -73,6 +73,10 @@
                                 {
                                     "type": "PushButton",
                                     "action": "match_port_line_name"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "arrange_port_position"
                                 }
                             ]
                         }

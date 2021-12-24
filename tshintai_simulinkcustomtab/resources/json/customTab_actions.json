@@ -173,6 +173,15 @@
             "commandType": "Script"
         },
         {
+            "type": "Action",
+            "id": "arrange_port_position",
+            "text": "ポートで揃える",
+            "icon": "flowchart_icon",
+            "description": "ブロックのポートX位置が同じになるように揃えます",
+            "command": "arrange_port_position_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
             "type": "Icon",
             "id": "openMathWorksWebsiteIcon",
             "icon16": "MathWorks_icon_16.png",
