@@ -125,11 +125,11 @@ dst_block_info{1, 5} = false;
 
 in_flag = false;
 [port_position_Y, port_handles] = ...
-    get_valid_port_position_Y(block_path, in_flag);
+    get_valid_port_position_Y(block_path, 'DstBlockHandle', in_flag);
 if isempty(port_position_Y)
     in_flag = true;
     [port_position_Y, port_handles] = ...
-        get_valid_port_position_Y(block_path, in_flag);
+        get_valid_port_position_Y(block_path, 'SrcBlockHandle', in_flag);
 end
 
 if in_flag
@@ -146,7 +146,7 @@ end
 [min_val, min_index] = min(port_position_Y);
 
 line_handle = get_param(port_handles(min_index), 'Line');
-if isempty(line_handle)
+if (isempty(line_handle) || line_handle < 0)
     return;
 end
 dst_block_handles = get_param(line_handle, block_destination);
@@ -193,7 +193,7 @@ dst_block_info{1, 5} = in_flag;
 end
 
 function [port_position_Y, port_handles] = ...
-    get_valid_port_position_Y(block_path, in_flag)
+    get_valid_port_position_Y(block_path, block_destination, in_flag)
 %% 初期化
 port_position_Y = [];
 
@@ -208,10 +208,12 @@ else
     port_pos_offset = 5;
     port_pos_index = 3;
 end
+
 if numel(port_handles) < 1
     return;
 end
 
+%%
 block_position = get_param(block_path, 'Position');
 port_position_Y = zeros(numel(port_handles), 1);
 port_valid_flag = true(numel(port_handles), 1);
@@ -226,6 +228,18 @@ for i = 1:numel(port_handles)
         port_valid_flag(i) = false;
     end
     
+    % ポートの先にブロックが繋がっていない場合、無効とする
+    line_handle = get_param(port_handles(i), 'Line');
+    if (isempty(line_handle) || line_handle < 0)
+        port_valid_flag(i) = false;
+    else
+        dst_block_handles = get_param(line_handle, block_destination);
+        if (isempty(dst_block_handles) || dst_block_handles < 0)
+            port_valid_flag(i) = false;
+        end
+    end
+
+
     port_position_Y(i) = port_position(2);
 end
 
