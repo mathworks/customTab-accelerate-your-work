@@ -234,7 +234,7 @@ for i = 1:numel(port_handles)
         port_valid_flag(i) = false;
     else
         dst_block_handles = get_param(line_handle, block_destination);
-        if (isempty(dst_block_handles) || dst_block_handles < 0)
+        if (isempty(dst_block_handles) || dst_block_handles(1) < 0)
             port_valid_flag(i) = false;
         end
     end
