@@ -9,7 +9,8 @@ function arrange_port_position_tshintaiCustomTab()
 % 出力ポートの先にブロックが繋がっていない場合、
 % 入力ポートの先に繋がっているブロックの出力ポート位置に合わせます。
 %%
-selected_block_list = find_system(gcs, ...
+current_layer = gcs;
+selected_block_list = find_system(current_layer, ...
         'SearchDepth',1, ...
         'Selected','on');
 
@@ -104,6 +105,78 @@ move_position(src_block_names, dst_block_info, ...
 move_position(src_block_names, dst_block_info, ...
     block_group_info, true);
 
+%%
+% 最後にブロック中心座標または一番目の出力ポート座標が同じブロックを探し、
+% それを見つけた場合は接続先ポートの位置にY座標を修正する。
+if numel(src_block_names) < 1.5
+    % 信号線を整えてから終わる
+    arrange_line(current_layer);
+    return;
+end
+block_match_th = 10;
+
+block_pos_list = zeros(numel(src_block_names), 4);
+port_pos_list  = zeros(numel(src_block_names), 2);
+for i = 1:numel(src_block_names)
+    block_pos_list(i, :) = get_param(src_block_names{i, 1}, 'Position');
+    port_handles = get_param(src_block_names{i, 1}, 'PortHandles');
+    if ~isempty(port_handles.Outport)
+        port_pos_list(i, :) = get_param(port_handles.Outport(1), 'Position');
+    else
+        port_pos_list(i, :) = [inf, inf];
+    end
+end
+
+block_near_flag = false(numel(src_block_names), 1);
+for i = 1:(numel(src_block_names) - 1)
+    this_block_pos = zeros(2, 1);
+    this_block_pos(1) = (block_pos_list(i, 1) + block_pos_list(i, 3)) / 2;
+    this_block_pos(2) = (block_pos_list(i, 2) + block_pos_list(i, 4)) / 2;
+    this_port_pos = port_pos_list(i, :);
+    for j = (i + 1):numel(src_block_names)
+        if ~(block_near_flag(j))
+            next_block_pos = zeros(2, 1);
+            next_block_pos(1) = ...
+                (block_pos_list(j, 1) + block_pos_list(j, 3)) / 2;
+            next_block_pos(2) = ...
+                (block_pos_list(j, 2) + block_pos_list(j, 4)) / 2;
+
+            distance = norm(this_block_pos - next_block_pos);
+            if (distance < block_match_th)
+                block_near_flag(i) = true;
+                block_near_flag(j) = true;
+                break;
+            end
+
+            next_port_pos = port_pos_list(j, :);
+            distance = norm(this_port_pos - next_port_pos);
+            if (distance < 1)
+                block_near_flag(i) = true;
+                block_near_flag(j) = true;
+                break;
+            end
+        end
+    end
+end
+
+%%
+for i = 1:numel(src_block_names)
+    if block_near_flag(i)
+        dst_block_info = block_info_connected_from(src_block_names{i, 1});
+        diff = dst_block_info{1, 4} - dst_block_info{1, 3};
+        next_pos = zeros(1, 4);
+        next_pos(1) = block_pos_list(i, 1);
+        next_pos(2) = block_pos_list(i, 2) + diff;
+        next_pos(3) = block_pos_list(i, 3);
+        next_pos(4) = block_pos_list(i, 4) + diff;
+        set_param(src_block_names{i, 1}, 'Position', next_pos);
+    end
+end
+
+%%
+% 信号線を整えてから終わる
+arrange_line(current_layer);
+
 end
 
 
@@ -164,8 +237,9 @@ if numel(dst_block_handles) > 1.5
     near_port_index = 1;
     for i = 1:numel(dst_block_handles)
         dst_port_pos = get_param(dst_port_handles(i), 'Position');
-        if (pos_dif > norm(dst_port_pos - src_port_pos))
-            pos_dif = norm(dst_port_pos - src_port_pos);
+        pos_distance = norm(dst_port_pos - src_port_pos);
+        if (pos_dif > pos_distance)
+            pos_dif = pos_distance;
             near_port_index = i;
         end
     end
@@ -278,5 +352,16 @@ for i = 1:numel(src_block_names)
     end
 end
 
+end
+
+
+function arrange_line(current_layer)
+selected_line_list = find_system(current_layer,...
+    'SearchDepth', 1, ...
+    'FindAll','on', ...
+    'Type','Line', ...
+    'Selected','on');
+
+Simulink.BlockDiagram.routeLine(selected_line_list);
 
 end
