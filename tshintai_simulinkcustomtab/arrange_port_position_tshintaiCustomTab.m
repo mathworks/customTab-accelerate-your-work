@@ -356,6 +356,7 @@ end
 
 
 function arrange_line(current_layer)
+%%
 selected_line_list = find_system(current_layer,...
     'SearchDepth', 1, ...
     'FindAll','on', ...
@@ -363,5 +364,11 @@ selected_line_list = find_system(current_layer,...
     'Selected','on');
 
 Simulink.BlockDiagram.routeLine(selected_line_list);
+
+%%
+% 1本ずつ行うと更に整うので、ここでそれを行う。
+for i = 1:numel(selected_line_list)
+    Simulink.BlockDiagram.routeLine(selected_line_list(i));
+end
 
 end
