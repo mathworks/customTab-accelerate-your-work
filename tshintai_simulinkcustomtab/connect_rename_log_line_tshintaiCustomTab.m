@@ -13,7 +13,7 @@ function connect_rename_log_line_tshintaiCustomTab()
 % ポートリストは、接続可能な未接続ポートの組み合わせが存在する限り
 % 繰り返し表示されます。
 %%
-selected_lines = check_only_lines_selected;
+selected_lines = check_only_lines_selected(gcs);
 
 if numel(selected_lines) == 1
     connect_line_to_port(selected_lines);
@@ -23,19 +23,30 @@ end
 
 end
 
-function selected_lines = check_only_lines_selected()
+function selected_lines = check_only_lines_selected(this_system)
 %%
-selected_line_list = find_system(gcs,...
+selected_line_list = find_system(this_system,...
     'SearchDepth', 1, ...
     'FindAll','on', ...
     'Type','Line', ...
     'Selected','on');
 
-selected_block_list = find_system(gcs, ...
+selected_block_list = find_system(this_system, ...
         'SearchDepth',1, ...
         'Selected','on');
 
+%%
+line_only = false;
 if isempty(selected_block_list)
+    line_only = true;
+elseif numel(selected_block_list) == 1
+    if strcmp(selected_block_list{1}, this_system)
+        line_only = true;
+    end
+end
+
+%%
+if line_only
     % 一つの信号線を選択していても、分岐している信号線は複数のハンドルを持つ。
     % そのため、同じ線かどうかをここで判定する。
     selected_lines = check_line_duplicated(selected_line_list);
