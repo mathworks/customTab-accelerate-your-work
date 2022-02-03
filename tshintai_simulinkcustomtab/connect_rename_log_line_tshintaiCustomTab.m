@@ -140,13 +140,38 @@ for i = 1:numel(RM_indx)
 
     outport_handle = get_param(selected_lines, 'SrcPortHandle');
 
+    % 信号線を綺麗に繋げるため、一旦ソ－スブロックを接続先の位置に合わせる
+    src_port_pos = get_param(outport_handle, 'Position');
+    dst_port_pos = get_param(disconnected_inport_list{RM_indx(i), 3}, 'Position');
+    port_y_dif = dst_port_pos(2) - src_port_pos(2);
+
+    parent_block_name = get_param(outport_handle, 'Parent');
+    parent_block_pos = get_param(parent_block_name, 'Position');
+    next_block_pos = [...
+        parent_block_pos(1), ...
+        parent_block_pos(2) + port_y_dif, ...
+        parent_block_pos(3), ...
+        parent_block_pos(4) + port_y_dif, ...
+        ];
+
+    set_param(parent_block_name, 'Position', next_block_pos);
+    route_line_of_port(outport_handle);
+
+    % 線を接続
     add_line(gcs, outport_handle, disconnected_inport_list{RM_indx(i), 3}, ...
         'autorouting','smart');
+
+    % ブロック位置を戻す
+    set_param(parent_block_name, 'Position', parent_block_pos);
+
 end
 
 % 選択されている線が未接続（赤線）の場合は削除する
-if get_param(selected_lines, 'DstPortHandle') < 0
-    delete_line(selected_lines);
+try
+    if get_param(selected_lines, 'DstPortHandle') < 0
+        delete_line(selected_lines);
+    end
+catch
 end
 
 end
@@ -377,5 +402,12 @@ else
     port_list{1, 4} = type;
     disconnected_port_list = [disconnected_port_list; port_list];
 end
+
+end
+
+function route_line_of_port(dst_port_handle)
+
+line_handle = get_param(dst_port_handle, 'Line');
+Simulink.BlockDiagram.routeLine(line_handle);
 
 end
