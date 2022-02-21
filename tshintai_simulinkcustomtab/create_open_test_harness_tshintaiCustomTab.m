@@ -1,6 +1,7 @@
 function create_open_test_harness_tshintaiCustomTab()
 %% 説明
-% 選択したサブシステム、参照モデルなどにテストハーネスを作成して開きます。
+% 選択したブロック、サブシステム、参照モデルなどに対して
+% テストハーネスを作成して開きます。
 % すでにテストハーネスが作成されている場合、そのハーネスを開きます。
 % 複数のテストハーネスが作成されている場合、
 % ダイアログで開くハーネスを選択します。
@@ -45,24 +46,28 @@ elseif numel(selected_block_list) > 1
     return;
 else
 
-    harness_list = sltest.harness.find(selected_block_list{1});
+    subsystem_flag = check_block_is_subsystem(selected_block_list{1});
+    if subsystem_flag(1)
+        harness_list = sltest.harness.find(selected_block_list{1});
 
-    if isempty(harness_list)
+        if isempty(harness_list)
 
-        block_name = get_param(selected_block_list{1}, 'Name');
-        harness_name = [block_name, '_harness'];
-        create_open_new_harness(model_name, selected_block_list{1}, harness_name);
+            block_name = get_param(selected_block_list{1}, 'Name');
+            harness_name = replace_bad_names([block_name, '_harness']);
+            create_open_new_harness(model_name, selected_block_list{1}, harness_name{1});
 
-    elseif numel(harness_list) == 1
+        elseif numel(harness_list) == 1
 
-        sltest.harness.open(selected_block_list{1}, harness_list(1).name);
+            sltest.harness.open(selected_block_list{1}, harness_list(1).name);
 
+        else
+
+            choose_from_multiple_harnesses(harness_list, selected_block_list{1});
+
+        end
     else
 
-        choose_from_multiple_harnesses(harness_list, selected_block_list{1});
-
     end
-
 end
 
 end
@@ -87,12 +92,30 @@ sltest.harness.open(system_name, ...
 
 end
 
-function create_open_new_harness(model_name, system_name, harness_name)
+function create_open_new_harness(model_name, system_path, harness_name)
 %%
-sltest.harness.create(system_name, 'Name', harness_name, ...
-    'CreateWithoutCompile', true);
+try
+    sltest.harness.create(system_path, 'Name', harness_name, ...
+        'CreateWithoutCompile', true);
+    sltest.harness.open(system_path, harness_name);
 
-sltest.harness.open(system_name, harness_name);
+catch
+    % エラーの場合は、そのブロックに対してサブシステムを作ってから
+    % ハーネスを作る。
+    block_handle = get_param(system_path, 'Handle');
+    parent_name  = get_param(system_path, 'Parent');
+    block_name   = replace_bad_names( ...
+        get_param(system_path, 'Name'));
+    subsystem_name = [block_name{1}, '__s'];
+    subsystem_path = [parent_name, '/', subsystem_name];
+
+    Simulink.BlockDiagram.createSubsystem(block_handle, ...
+        'Name', subsystem_name);
+    sltest.harness.create(subsystem_path, 'Name', harness_name, ...
+        'CreateWithoutCompile', true);
+
+    sltest.harness.open(subsystem_path, harness_name);
+end
 
 %%
 BW_access = get_param(model_name, 'EnableAccessToBaseWorkspace');
@@ -130,6 +153,50 @@ for i = 1:numel(inport_list)
     set_param(sc_block_name, 'Position', inport_pos);
 
     Simulink.sdi.markSignalForStreaming(line_handle, 'on');
+end
+
+end
+
+function subsystem_flag = check_block_is_subsystem(block_list)
+%%
+block_list = make_cell_list(block_list);
+
+%%
+subsystem_flag = false(numel(block_list), 1);
+
+for i = 1:numel(block_list)
+    if strcmp(get_param(block_list{i}, 'BlockType'), ...
+            'SubSystem')
+        subsystem_flag(i) = true;
+    end
+end
+
+end
+
+function rep_block_list = replace_bad_names(block_list)
+%%
+block_list = make_cell_list(block_list);
+
+%%
+rep_block_list = block_list;
+
+for i = 1:numel(block_list)
+    name = strrep(block_list{i}, newline, '_');
+    name = strrep(name, ' ', '_');
+    rep_block_list{i} = name;
+end
+
+end
+
+function cell_block_list = make_cell_list(block_list)
+%%
+if isempty(block_list)
+    return;
+elseif ~iscell(block_list)
+    cell_block_list = cell(1, 1);
+    cell_block_list{1} = block_list;
+else
+    cell_block_list = block_list;
 end
 
 end

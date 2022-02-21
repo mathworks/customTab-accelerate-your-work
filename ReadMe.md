@@ -249,7 +249,7 @@ edit disable_and_open_lib_block_tshintaiCustomTab
 ### 4.1.「作成 / 開く」ボタン
 
 
-選択したサブシステム、参照モデルなどにテストハーネスを作成して開く。
+選択したブロック、サブシステム、参照モデルなどに対してテストハーネスを作成して開く。
 
 
 
@@ -406,10 +406,10 @@ edit close_project_tshintaiCustomTab
 [プロジェクトのルート]を追加するには、上記画像の「フォルダーを追加…」ボタンをクリックし、現在開いているプロジェクトの最上位階層フォルダー（”.prj”ファイルを直下に含むフォルダー）を指定すればよい。
 
 
-## 4."slReloadToolstripConfig"を起動時に実行させる
+## 4."slReloadToolstripConfig"を起動、シャットダウン時に実行させる
 
 
-「起動とシャットダウン」ボタンから設定する、プロジェクトの起動時に実行するスクリプト内に、”slReloadToolstripConfig”を記述する。
+「プロジェクトの起動とシャットダウンの管理」にて、「Simulink カスタマイズの更新」にチェックを入れる。
 
 
 
@@ -420,7 +420,7 @@ edit close_project_tshintaiCustomTab
 ## 5.シャットダウン時に無効化する
 
 
-シャットダウン時に実行するファイルに、[プロジェクトのルート]パスを削除してリロードさせることで、プロジェクトのシャットダウン時にカスタムタブの設定を無効化することができる。
+シャットダウン時に実行するファイルに、[プロジェクトのルート]パスを削除してSimulink カスタマイズの更新をさせることで、プロジェクトのシャットダウン時にカスタムタブの設定を無効化することができる。
 
 
 
@@ -431,6 +431,6 @@ edit close_project_tshintaiCustomTab
   
 
 
-* Copyright 2021 The MathWorks, Inc.*
+* Copyright 2022 The MathWorks, Inc.*
 
 
