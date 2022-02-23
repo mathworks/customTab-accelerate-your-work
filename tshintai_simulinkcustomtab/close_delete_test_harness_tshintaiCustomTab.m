@@ -41,15 +41,56 @@ end
 end
 
 function find_and_delete_harness(model_name)
+%%
+selected_block_list = find_system(gcs, ...
+        'SearchDepth',1, ...
+        'Selected','on');
 
-harness_list = sltest.harness.find(model_name);
-if isempty(harness_list)
-    return;
-end
+%%
+if ~isempty(selected_block_list)
+    % 「__s」と末尾についたサブシステムが選択されていた場合、
+    % 「作成/開く」のスクリプトで作成された一時的なサブシステム
+    % であるので、元に戻す。
+    idx__s = 0;
+    for i = 1:numel(selected_block_list)
+        if strcmp(selected_block_list{i}(end-2:end), '__s')
+            idx__s = i;
+            break;
+        end
+    end
 
-for i = 1:numel(harness_list)
-    sltest.harness.delete(harness_list(i).ownerFullPath, ...
-        harness_list(i).name);
+    if (idx__s > 0.5)
+        block_original_pos = ...
+            get_param(selected_block_list{idx__s}, 'Position');
+        parent_path = ...
+            get_param(selected_block_list{idx__s}, 'Parent');
+        s_text = strsplit(selected_block_list{idx__s}(1:end-3), '/');
+        post_block_path = [parent_path, '/', s_text{end}];
+
+        original_block_path = [...
+            selected_block_list{idx__s}, '/', ...
+            s_text{end}];
+        
+        try
+            add_block(original_block_path, post_block_path);
+        catch
+            return;
+        end
+
+        delete_block(selected_block_list{idx__s});
+        set_param(post_block_path, 'Position', block_original_pos);
+    end
+else
+    %%
+    harness_list = sltest.harness.find(model_name);
+    if isempty(harness_list)
+        return;
+    end
+
+    for i = 1:numel(harness_list)
+        sltest.harness.delete(harness_list(i).ownerFullPath, ...
+            harness_list(i).name);
+    end
 end
 
 end

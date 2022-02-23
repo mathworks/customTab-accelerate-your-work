@@ -108,12 +108,17 @@ catch
         get_param(system_path, 'Name'));
     subsystem_name = [block_name{1}, '__s'];
     subsystem_path = [parent_name, '/', subsystem_name];
+    block_pos = get_param(system_path, 'Position');
+
+    % 削除する時のため、ブロック名は修正する
+    set_param(system_path, 'Name', block_name{1});
 
     Simulink.BlockDiagram.createSubsystem(block_handle, ...
         'Name', subsystem_name);
+    set_param(subsystem_path, 'Position', block_pos);
+
     sltest.harness.create(subsystem_path, 'Name', harness_name, ...
         'CreateWithoutCompile', true);
-
     sltest.harness.open(subsystem_path, harness_name);
 end
 
