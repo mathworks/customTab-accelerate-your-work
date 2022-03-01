@@ -157,9 +157,9 @@
         {
             "type": "Action",
             "id": "log_named_line",
-            "text": "名前付信号をログ",
+            "text": "信号と変数をログ",
             "icon": "graph_icon",
-            "description": "モデル内の名前付き信号線をログ設定します",
+            "description": "モデル内の名前付き信号線、Simscape変数をログ設定します",
             "command": "log_named_line_tshintaiCustomTab",
             "commandType": "Script"
         },
@@ -179,6 +179,30 @@
             "icon": "flowchart_icon",
             "description": "ブロックのポートX位置が同じになるように揃えます",
             "command": "arrange_port_position_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "save_load_SDI_view_action",
+            "text": "View設定",
+            "icon": "graph_icon"
+        },
+        {
+            "type": "Action",
+            "id": "save_this_SDI_view",
+            "text": "Viewを保存",
+            "icon": "graph_icon",
+            "description": "今のSDI Viewを保存し、このモデルに関連付けます",
+            "command": "save_this_SDI_view_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "load_this_model_view",
+            "text": "Viewを読み込み",
+            "icon": "graph_icon",
+            "description": "このモデルに関連付けられたSDI Viewを読み込みます",
+            "command": "load_this_model_view_tshintaiCustomTab",
             "commandType": "Script"
         },
         {

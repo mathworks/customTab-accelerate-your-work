@@ -3,67 +3,15 @@
     "entries": [
         {
             "type": "PopupList",
-            "id": "newPopUpList",
+            "id": "save_load_SDI_view",
             "children": [
                 {
                     "type": "ListItem",
-                    "action": "createNewBlankModelAction"
+                    "action": "save_this_SDI_view"
                 },
                 {
                     "type": "ListItem",
-                    "action": "createNewBlankReferenceableSubsystemAction"
-                },
-                {
-                    "type": "ListItem",
-                    "action": "createNewProjectFromModelAction"
-                }
-            ]
-        },
-        {
-            "type": "PopupList",
-            "id": "savePopUpList",
-            "children": [
-                {
-                    "type": "ListHeader",
-                    "text": "Save"
-                },
-                {
-                    "type": "ListItem",
-                    "action": "saveModelAction"
-                },
-                {
-                    "type": "ListItem",
-                    "action": "saveModelAsAction"
-                },
-                {
-                    "type": "ListHeader",
-                    "text": "Export"
-                },
-                {
-                    "type": "ListItemWithPopup",
-                    "action": "exportPopUpAction",
-                    "popupName": "exportPopUpList"
-                }
-            ]
-        },
-        {
-            "type": "PopupList",
-            "id": "exportPopUpList",
-            "children": [
-                {
-                    "type": "ListItem",
-                    "action": "createProtectedModelAction"
-                },
-                {
-                    "type": "ListItem",
-                    "action": "exportModelToTemplateAction"
-                },
-                {
-                    "type": "ListSeparator"
-                },
-                {
-                    "type": "ListItem",
-                    "action": "exportModelToPreviousVersionAction"
+                    "action": "load_this_model_view"
                 }
             ]
         }
