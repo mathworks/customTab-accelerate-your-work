@@ -462,6 +462,24 @@ edit close_project_tshintaiCustomTab
 
 
   
+# 過去バージョン
+
+
+過去のバージョンのファイル一式は、以下から得ることができる。ただし、過去のモデルには、古い時期に作成したサンプルしか含まれていないことに注意すること。
+
+
+
+
+GitHubからクローンしている場合には、以下の該当バージョンに戻すことで、過去バージョンファイルを得ることができる。
+
+
+  
+
+
+R2021b: [v1.2](https://github.com/mathworks/customTab-accelerate-your-work/archive/refs/tags/v1.2.zip)
+
+
+  
 
 
 * Copyright 2022 The MathWorks, Inc.*
