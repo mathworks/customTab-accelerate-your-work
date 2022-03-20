@@ -120,6 +120,11 @@ else
             num2str(disconnected_inport_list{i, 2})];
     end
 
+    % ダイアログ表示のため、改行を置換する
+    for i = 1:numel(disconnected_inport_text)
+        disconnected_inport_text{i} = ...
+            strrep(disconnected_inport_text{i}, newline, ' ');
+    end
 
     [RM_indx, tf] = listdlg( ...
         'ListString', disconnected_inport_text, ...
@@ -195,6 +200,7 @@ while(1)
     end
 
     %%
+    % ダイアログ表示のため、改行を置換する
     for i = 1:numel(selected_block_list)
         selected_block_list{i}  = strrep(selected_block_list{i}, newline, ' ');
     end
