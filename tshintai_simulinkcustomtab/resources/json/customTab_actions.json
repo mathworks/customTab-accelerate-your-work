@@ -206,6 +206,15 @@
             "commandType": "Script"
         },
         {
+            "type": "Action",
+            "id": "open_model_config",
+            "text": "設定を開く",
+            "icon": "flowchart_icon",
+            "description": "このモデルの参照先のコンフィギュレーションパラメーターを開きます",
+            "command": "open_config_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
             "type": "Icon",
             "id": "openMathWorksWebsiteIcon",
             "icon16": "MathWorks_icon_16.png",

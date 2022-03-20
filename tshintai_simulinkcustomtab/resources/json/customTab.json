@@ -34,7 +34,7 @@
                             "children": [
                                 {
                                     "type": "PushButton",
-                                    "action": "openModelConfigParamAction"
+                                    "action": "open_model_config"
                                 },
                                 {
                                     "type": "PushButton",
