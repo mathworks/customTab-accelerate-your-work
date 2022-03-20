@@ -99,7 +99,18 @@ edit diff_with_latest_commit_sldd_tshintaiCustomTab
 ```
 
 ## 2.モデル セクション
-### 2.1.「ウィンドウで開く」ボタン
+### 2.1.「設定を開く」ボタン
+
+
+モデルのコンフィギュレーションパラメーターを開きます。そのモデルのコンフィギュレーションパラメーターが参照の場合は、参照先のコンフィギュレーションパラメーターを開きます。
+
+
+
+```matlab:Code
+edit open_config_tshintaiCustomTab
+```
+
+### 2.2.「ウィンドウで開く」ボタン
 
 
 選択したブロックを新しいウィンドウで開く。選択していない場合は、現在の階層を対象に開く。
@@ -115,7 +126,7 @@ edit diff_with_latest_commit_sldd_tshintaiCustomTab
 edit open_system_with_new_window_tshintaiCustomTab
 ```
 
-### 2.2.「戻す」ボタン
+### 2.3.「戻す」ボタン
 
 
 モデルファイルを閉じ、その後ローカルリポジトリの最新コミットの状態に戻す。
@@ -131,7 +142,7 @@ Gitのコマンドを使用しているため、Gitがインストールされ�
 edit revert_Simulink_model_tshintaiCustomTab
 ```
 
-### 2.3.「次元 / データ型」ボタン
+### 2.4.「次元 / データ型」ボタン
 
 
 モデルの「信号の次元」と「端子のデータ型」を表示させる。
@@ -142,7 +153,7 @@ edit revert_Simulink_model_tshintaiCustomTab
 edit show_line_data_types_dimensions_tshintaiCustomTab
 ```
 
-### 2.4.「色とタブを初期化」ボタン
+### 2.5.「色とタブを初期化」ボタン
 
 
 モデル内のブロックの色をリセットし、タブを全て閉じる。
@@ -153,7 +164,7 @@ edit show_line_data_types_dimensions_tshintaiCustomTab
 edit reset_model_color_and_close_tab_tshintaiCustomTab
 ```
 
-### 2.5.「サイズを合わせる」ボタン
+### 2.6.「サイズを合わせる」ボタン
 
 
 選択状態のブロックのサイズを、フォーカスされたブロックのサイズに一致させる。
@@ -169,7 +180,7 @@ edit reset_model_color_and_close_tab_tshintaiCustomTab
 edit match_block_size_tshintaiCustomTab
 ```
 
-### 2.6.「信号線を接続」ボタン
+### 2.7.「信号線を接続」ボタン
 
 
 ブロックや信号線の選択状態に応じて以下のどちらかの処理を行う。
@@ -189,7 +200,7 @@ edit match_block_size_tshintaiCustomTab
 edit connect_rename_log_line_tshintaiCustomTab
 ```
 
-### 2.7.「信号名を伝搬」ボタン
+### 2.8.「信号名を伝搬」ボタン
 
 
 今の階層以下のモデル内を検索し、信号線が接続されているポートに対して以下の操作を行う。
@@ -206,7 +217,7 @@ edit connect_rename_log_line_tshintaiCustomTab
 edit match_port_line_name_tshintaiCustomTab
 ```
 
-### 2.8.「ポートで揃える」ボタン
+### 2.9.「ポートで揃える」ボタン
 
 
 選択したブロック同士のポート位置が横一列に揃うようにブロックの上下位置を並べ替える。また、同じ線で接続されたブロックグループを探し、そのグループごとに並べる。
