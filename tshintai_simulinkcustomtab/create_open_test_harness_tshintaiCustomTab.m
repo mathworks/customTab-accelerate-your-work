@@ -30,7 +30,7 @@ if isempty(selected_block_list)
     if isempty(harness_list)
 
         harness_name = [system_name, '_harness'];
-        create_open_new_harness(model_name, system_name, harness_name);
+        create_open_new_harness(model_name, system_name, harness_name, 0);
 
     elseif numel(harness_list) == 1
 
@@ -47,14 +47,16 @@ elseif numel(selected_block_list) > 1
 else
 
     subsystem_flag = check_block_is_subsystem(selected_block_list{1});
-    if subsystem_flag(1)
+    if (subsystem_flag(1) == 1)
+        % 通常のサブシステムの場合
         harness_list = sltest.harness.find(selected_block_list{1});
 
         if isempty(harness_list)
 
             block_name = get_param(selected_block_list{1}, 'Name');
             harness_name = replace_bad_names([block_name, '_harness']);
-            create_open_new_harness(model_name, selected_block_list{1}, harness_name{1});
+            create_open_new_harness(model_name, selected_block_list{1}, ...
+                harness_name{1}, subsystem_flag);
 
         elseif numel(harness_list) == 1
 
@@ -65,7 +67,54 @@ else
             choose_from_multiple_harnesses(harness_list, selected_block_list{1});
 
         end
-    else
+    elseif (subsystem_flag(1) == 2)
+        % 参照サブシステムの場合
+        subsystem_ref_name = get_param(selected_block_list{1}, ...
+            'ReferencedSubsystem');
+        load_system(subsystem_ref_name);
+        harness_list = sltest.harness.find(subsystem_ref_name);
+
+        if isempty(harness_list)
+
+            harness_name = replace_bad_names([subsystem_ref_name, '_harness']);
+            create_open_new_harness(model_name, subsystem_ref_name, ...
+                harness_name{1}, subsystem_flag);
+
+        else
+
+            if (numel(harness_list) == 1)
+                sltest.harness.open( ...
+                    subsystem_ref_name, harness_list(1).name);
+            else
+                choose_from_multiple_harnesses( ...
+                    harness_list, subsystem_ref_name);
+            end
+
+        end
+
+    elseif (subsystem_flag(1) == 3)
+        % 参照モデルの場合
+        ref_model_name = get_param(selected_block_list{1}, 'ModelName');
+        load_system(ref_model_name);
+        harness_list = sltest.harness.find(ref_model_name);
+
+        if isempty(harness_list)
+
+            harness_name = replace_bad_names([ref_model_name, '_harness']);
+            create_open_new_harness(ref_model_name, ref_model_name, ...
+                harness_name{1}, subsystem_flag);
+
+        else
+
+            if (numel(harness_list) == 1)
+                sltest.harness.open( ...
+                    ref_model_name, harness_list(1).name);
+            else
+                choose_from_multiple_harnesses( ...
+                    harness_list, ref_model_name);
+            end
+
+        end
 
     end
 end
@@ -92,7 +141,8 @@ sltest.harness.open(system_name, ...
 
 end
 
-function create_open_new_harness(model_name, system_path, harness_name)
+function create_open_new_harness(model_name, system_path, harness_name, ...
+    subsystem_type)
 %%
 try
     sltest.harness.create(system_path, 'Name', harness_name, ...
@@ -160,19 +210,55 @@ for i = 1:numel(inport_list)
     Simulink.sdi.markSignalForStreaming(line_handle, 'on');
 end
 
+if (subsystem_type == 2)
+    linked_sldd_name = get_param(model_name, 'DataDictionary');
+    if ~isempty(linked_sldd_name)
+        set_param(harness_name, 'DataDictionary', linked_sldd_name);
+    end
+    
+    activeConfigObj = getActiveConfigSet(model_name);
+    original_config_name = get_param(activeConfigObj, 'Name');
+
+    harness_config_name = [system_path, '__harness_config'];
+    set_param(activeConfigObj, 'Name', harness_config_name);
+    attachConfigSetCopy(harness_name, activeConfigObj);
+    setActiveConfigSet(harness_name, harness_config_name);
+
+    set_param(activeConfigObj, 'Name', original_config_name);
 end
 
-function subsystem_flag = check_block_is_subsystem(block_list)
+end
+
+function subsystem_type = check_block_is_subsystem(block_list)
 %%
 block_list = make_cell_list(block_list);
 
-%%
-subsystem_flag = false(numel(block_list), 1);
+%% 
+% subsystem_typeは、0はサブシステムではない普通のブロック、
+% 1は通常のサブシステム、2は参照サブシステム、
+% 3は参照モデルを示す。
+subsystem_type = zeros(numel(block_list), 1);
 
 for i = 1:numel(block_list)
     if strcmp(get_param(block_list{i}, 'BlockType'), ...
             'SubSystem')
-        subsystem_flag(i) = true;
+        try
+            subsystem_ref_name = get_param(block_list{i}, ...
+                    'ReferencedSubsystem');
+        catch
+            subsystem_ref_name = '';
+        end
+
+        if isempty(subsystem_ref_name)
+            subsystem_type(i) = 1;
+        else
+            subsystem_type(i) = 2;
+        end
+    else
+        if strcmp(get_param(block_list{i}, 'BlockType'), ...
+                'ModelReference')
+            subsystem_type(i) = 3;
+        end
     end
 end
 
