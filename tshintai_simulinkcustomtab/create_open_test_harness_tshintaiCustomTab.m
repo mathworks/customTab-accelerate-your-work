@@ -316,6 +316,7 @@ rep_block_list = block_list;
 for i = 1:numel(block_list)
     name = strrep(block_list{i}, newline, '_');
     name = strrep(name, ' ', '_');
+    name = strrep(name, '-', '_');
     rep_block_list{i} = name;
 end
 
