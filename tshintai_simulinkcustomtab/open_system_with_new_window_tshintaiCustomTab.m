@@ -31,15 +31,28 @@ for i = 1:numel(selected_block_list)
 
     else
 
-        if strcmp(get_param(selected_block_list{i}, 'BlockType'), ...
+        if strcmp(get_param(selected_block_list{i}, 'Variant'), 'on')
+            sub_block_list = find_system(selected_block_list{i}, ...
+                'SearchDepth', 1, ...
+                'regexp', 'on', 'BlockType', 'SubSystem|ModelReference');
+            if numel(sub_block_list) < 1.5
+                return;
+            end
+
+            block_path_to_open = sub_block_list{2};
+        else
+            block_path_to_open = selected_block_list{i};
+        end
+
+        if strcmp(get_param(block_path_to_open, 'BlockType'), ...
                 'ModelReference')
-            ref_model_name = get_param(selected_block_list{i}, 'ModelName');
+            ref_model_name = get_param(block_path_to_open, 'ModelName');
             open_system_near_bdroot(ref_model_name, model_root);
 
         else
 
             try
-                subsystem_ref_name = get_param(selected_block_list{i}, ...
+                subsystem_ref_name = get_param(block_path_to_open, ...
                     'ReferencedSubsystem');
             catch
                 subsystem_ref_name = '';
@@ -48,7 +61,7 @@ for i = 1:numel(selected_block_list)
             if ~isempty(subsystem_ref_name)
                 open_system_near_bdroot(subsystem_ref_name, model_root);
             else
-                open_system_near_bdroot(selected_block_list{i}, model_root);
+                open_system_near_bdroot(block_path_to_open, model_root);
             end
 
         end
