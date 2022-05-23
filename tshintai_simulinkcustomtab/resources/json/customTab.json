@@ -181,7 +181,7 @@
                 },
                 {
                     "type": "Section",
-                    "title": "閉じる",
+                    "title": "保存 / 閉じる",
                     "children": [
                         {
                             "type": "Column",
@@ -190,6 +190,15 @@
                                     "type": "PushButton",
                                     "action": "close_and_reopen_model"
                                 },
+                                {
+                                    "type": "PushButton",
+                                    "action": "save_dirty_models"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
                                 {
                                     "type": "PushButton",
                                     "action": "close_all_Simulink_windows"

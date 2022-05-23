@@ -215,6 +215,15 @@
             "commandType": "Script"
         },
         {
+            "type": "Action",
+            "id": "save_dirty_models",
+            "text": "変更を保存",
+            "icon": "submarine_icon",
+            "description": "参照先のモデル全体の中で、変更されたモデルのみ保存します",
+            "command": "save_dirty_models_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
             "type": "Icon",
             "id": "openMathWorksWebsiteIcon",
             "icon16": "MathWorks_icon_16.png",
