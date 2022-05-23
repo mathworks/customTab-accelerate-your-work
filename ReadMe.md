@@ -374,7 +374,23 @@ edit initialize_SDI_tshintaiCustomTab
 edit close_and_reopen_model_tshintaiCustomTab
 ```
 
-### 7.2.「すべて閉じる」ボタン
+### 7.2.「変更を保存」ボタン
+
+
+このボタンをクリックしたモデルの参照先モデルと自身を確認し、変更されているものだけを保存する。
+
+
+
+
+これにより、確実に変更されたモデルだけをGitで判別できるようになる。
+
+
+
+```matlab:Code
+edit save_dirty_models_tshintaiCustomTab
+```
+
+### 7.3.「すべて閉じる」ボタン
 
 
 開いているSimulinkモデルを全て閉じる。モデルは保存して閉じる。
@@ -385,7 +401,7 @@ edit close_and_reopen_model_tshintaiCustomTab
 edit close_all_Simulink_windows_tshintaiCustomTab
 ```
 
-### 7.3.「PJを閉じる」ボタン
+### 7.4.「PJを閉じる」ボタン
 
 
 プロジェクトを開いている場合、プロジェクトを閉じる。開いていない場合、何もしない。
