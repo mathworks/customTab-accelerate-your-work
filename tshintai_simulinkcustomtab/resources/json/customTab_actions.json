@@ -224,6 +224,15 @@
             "commandType": "Script"
         },
         {
+            "type": "Action",
+            "id": "auto_connect_ports_in_test_harness",
+            "text": "ポートを更新",
+            "icon": "agile_icon",
+            "description": "テスト対象のサブシステムのポートを増減させた時、クリックすることで「Signal spec. and routing」を再生成できます",
+            "command": "auto_connect_ports_in_test_harness_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
             "type": "Icon",
             "id": "openMathWorksWebsiteIcon",
             "icon16": "MathWorks_icon_16.png",

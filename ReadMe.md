@@ -102,12 +102,12 @@ edit diff_with_latest_commit_sldd_tshintaiCustomTab
 ### 2.1.「設定を開く」ボタン
 
 
-モデルの今開いている階層のコンフィギュレーションパラメーターを開きます。例えば、上位階層のモデルから参照モデルを開いている時、その参照先のモデルのコンフィギュレーションパラメーターを開きます。
+モデルの今開いている階層のコンフィギュレーションパラメーターを開く。例えば、上位階層のモデルから参照モデルを開いている時、その参照先のモデルのコンフィギュレーションパラメーターを開く。
 
 
 
 
-また、そのモデルがコンフィギュレーション参照を行っている場合は、参照先のコンフィギュレーションパラメーターを開きます。
+また、そのモデルがコンフィギュレーション参照を行っている場合は、参照先のコンフィギュレーションパラメーターを開く。
 
 
 
@@ -297,6 +297,22 @@ edit create_open_test_harness_tshintaiCustomTab
 
 ```matlab:Code
 edit close_delete_test_harness_tshintaiCustomTab
+```
+
+### 4.3.「ポートを更新」ボタン
+
+
+テストハーネスでテストを行う対象のサブシステムのポートの数が変化した時、「Signal spec. and routing」ブロックも合わせて修正したい。
+
+
+
+
+この時、このスクリプトを実行することで「Signal spec. and routing」を更新することができる。
+
+
+
+```matlab:Code
+edit auto_connect_ports_in_test_harness_tshintaiCustomTab
 ```
 
 ## 5.シミュレーション セクション

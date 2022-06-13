@@ -115,6 +115,10 @@
                                 {
                                     "type": "PushButton",
                                     "action": "close_delete_test_harness"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "auto_connect_ports_in_test_harness"
                                 }
                             ]
                         }
