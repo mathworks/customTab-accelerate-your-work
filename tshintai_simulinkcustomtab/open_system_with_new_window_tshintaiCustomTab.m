@@ -30,8 +30,13 @@ for i = 1:numel(selected_block_list)
         open_system_near_bdroot(selected_block_list{i}, model_root);
 
     else
+        try
+            is_variant = get_param(selected_block_list{i}, 'Variant');
+        catch
+            is_variant = 'off';
+        end
 
-        if strcmp(get_param(selected_block_list{i}, 'Variant'), 'on')
+        if strcmp(is_variant ,'on')
             sub_block_list = find_system(selected_block_list{i}, ...
                 'SearchDepth', 1, ...
                 'regexp', 'on', 'BlockType', 'SubSystem|ModelReference');
@@ -81,10 +86,14 @@ end
 %%
 location_offset = 30;
 root_location = get_param(model_root, 'Location');
-model_location = get_param(model_name, 'Location');
+try
+    model_location = get_param(model_name, 'Location');
+catch
+    model_location = '';
+end
 
-if ~isempty(root_location(root_location <= 0))
-    % 位置情報にマイナス値がある場合、
+if (~isempty(root_location(root_location <= 0)) || isempty(model_location))
+    % 位置情報にマイナス値がある場合、またはLocationが取れない場合、
     % ウィンドウ位置を正しく動かせないのでここで中断する。
     return;
 end
