@@ -58,7 +58,7 @@
         {
             "type": "Action",
             "id": "connect_rename_log_line",
-            "text": "信号線を接続",
+            "text": "選択して接続",
             "icon": "flowchart_icon",
             "description": "信号を自動で接続し、信号名を付け、ログ設定を行います",
             "command": "connect_rename_log_line_tshintaiCustomTab",
@@ -230,6 +230,21 @@
             "icon": "agile_icon",
             "description": "テスト対象のサブシステムのポートを増減させた時、クリックすることで「Signal spec. and routing」を再生成できます",
             "command": "auto_connect_ports_in_test_harness_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "connect_signals_action",
+            "text": "信号線を接続",
+            "icon": "flowchart_icon"
+        },
+        {
+            "type": "Action",
+            "id": "connect_nearest_ports",
+            "text": "最近傍を接続",
+            "icon": "flowchart_icon",
+            "description": "未接続入出力ポートの最も近いもの同士を自動的に接続します",
+            "command": "connect_nearest_ports_tshintaiCustomTab",
             "commandType": "Script"
         },
         {

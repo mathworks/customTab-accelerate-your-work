@@ -14,6 +14,20 @@
                     "action": "load_this_model_view"
                 }
             ]
+        },
+        {
+            "type": "PopupList",
+            "id": "connect_signals",
+            "children": [
+                {
+                    "type": "ListItem",
+                    "action": "connect_nearest_ports"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "connect_rename_log_line"
+                }
+            ]
         }
     ]
 }

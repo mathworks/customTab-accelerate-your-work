@@ -46,7 +46,8 @@ elseif numel(selected_block_list) > 1
     return;
 else
 
-    subsystem_type = check_block_is_subsystem(selected_block_list{1});
+    subsystem_type = check_block_is_subsystem_tshintaiCustomTab( ...
+        selected_block_list{1});
     if (subsystem_type(1) == 1)
         % 通常のサブシステムの場合
         harness_list = sltest.harness.find(selected_block_list{1});
@@ -266,51 +267,9 @@ end
 
 end
 
-function subsystem_type = check_block_is_subsystem(block_list)
-%%
-block_list = make_cell_list(block_list);
-
-%% 
-% subsystem_typeは、0はサブシステムではない普通のブロック、
-% 1は通常のサブシステム、2は参照サブシステム、
-% 3は参照モデルを示す。
-subsystem_type = zeros(numel(block_list), 1);
-
-for i = 1:numel(block_list)
-    if strcmp(get_param(block_list{i}, 'BlockType'), ...
-            'SubSystem')
-        try
-            subsystem_ref_name = get_param(block_list{i}, ...
-                    'ReferencedSubsystem');
-        catch
-            subsystem_ref_name = '';
-        end
-
-        if isempty(subsystem_ref_name)
-            if strcmp( ...
-                    get_param(block_list{i}, 'StaticLinkStatus'), ...
-                    'resolved')
-                % ライブラリリンクされたブロックは通常のブロック扱いとする
-                subsystem_type(i) = 0;
-            else
-                subsystem_type(i) = 1;
-            end
-        else
-            subsystem_type(i) = 2;
-        end
-    else
-        if strcmp(get_param(block_list{i}, 'BlockType'), ...
-                'ModelReference')
-            subsystem_type(i) = 3;
-        end
-    end
-end
-
-end
-
 function rep_block_list = replace_bad_names(block_list)
 %%
-block_list = make_cell_list(block_list);
+block_list = make_cell_list_tshintaiCustomTab(block_list);
 
 %%
 rep_block_list = block_list;
@@ -320,19 +279,6 @@ for i = 1:numel(block_list)
     name = strrep(name, ' ', '_');
     name = strrep(name, '-', '_');
     rep_block_list{i} = name;
-end
-
-end
-
-function cell_block_list = make_cell_list(block_list)
-%%
-if isempty(block_list)
-    return;
-elseif ~iscell(block_list)
-    cell_block_list = cell(1, 1);
-    cell_block_list{1} = block_list;
-else
-    cell_block_list = block_list;
 end
 
 end

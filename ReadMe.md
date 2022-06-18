@@ -186,6 +186,18 @@ edit match_block_size_tshintaiCustomTab
 ```
 
 ### 2.7.「信号線を接続」ボタン
+### 2.7.1.「最近傍を接続」ボタン
+
+
+コメントアウトされていないブロックの未接続ポートを、最も近い入力、出力ポート同士の組み合わせで接続する。
+
+
+
+```matlab:Code
+edit connect_nearest_ports_tshintaiCustomTab.m
+```
+
+### 2.7.2.「選択して接続」ボタン
 
 
 ブロックや信号線の選択状態に応じて以下のどちらかの処理を行う。
@@ -202,7 +214,7 @@ edit match_block_size_tshintaiCustomTab
 
 
 ```matlab:Code
-edit connect_rename_log_line_tshintaiCustomTab
+edit connect_rename_log_line_tshintaiCustomTab.m
 ```
 
 ### 2.8.「信号名を伝搬」ボタン

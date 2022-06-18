@@ -14,6 +14,25 @@ if strcmp(get_param(this_harness_name, 'IsHarness'), 'off')
 end
 
 %%
+Signal_spec_outside_name = ...
+    ['Output', newline, 'Conversion', newline 'Subsystem'];
+Signal_spec_inside_name = ...
+    ['Input', newline, 'Conversion', newline 'Subsystem'];
+Signal_spec_inside_harness_path = ...
+    [this_harness_name, '/', Signal_spec_inside_name];
+Signal_spec_outside_harness_path = ...
+    [this_harness_name, '/', Signal_spec_outside_name];
+
+inside_old_exists = false;
+outside_old_exists = false;
+if (getSimulinkBlockHandle(Signal_spec_inside_harness_path) > -0.5)
+    inside_old_exists = true;
+end
+if (getSimulinkBlockHandle(Signal_spec_outside_harness_path) > -0.5)
+    outside_old_exists = true;
+end
+
+%%
 close_system(this_harness_name);
 
 harness_list = sltest.harness.find(bdroot);
@@ -29,24 +48,19 @@ end
 
 % ここで、参照サブシステムである場合は事前に保存する必要がある
 model_name_temp = strsplit(harness_owner_name, '/');
+model_info = Simulink.MDLInfo(model_name_temp{1});
 if numel(model_name_temp) < 1.5
-    model_info = Simulink.MDLInfo(model_name_temp{1});
     if strcmp(model_info.BlockDiagramType, 'Subsystem')
-        save_system(model_name_temp{1});
+        save_system(model_name_temp{1}, [], 'SaveDirtyReferencedModels', true);
     end
 end
 
 harness_name_temp = [this_harness_name, '____temporary____'];
 sltest.harness.create(harness_owner_name, 'Name', harness_name_temp, ...
     'CreateWithoutCompile', true);
-sltest.harness.open(harness_owner_name, harness_name_temp);
+sltest.harness.load(harness_owner_name, harness_name_temp);
 
 %%
-Signal_spec_outside_name = ...
-    ['Output', newline, 'Conversion', newline 'Subsystem'];
-Signal_spec_inside_name = ...
-    ['Input', newline, 'Conversion', newline 'Subsystem'];
-
 temp_model_handle = new_system;
 load_system(temp_model_handle);
 temp_model_name = get_param(0, 'CurrentSystem');
@@ -59,10 +73,6 @@ Signal_spec_inside_model_temp_path = ...
     [temp_model_name, '/', Signal_spec_inside_name];
 Signal_spec_outside_model_temp_path = ...
     [temp_model_name, '/', Signal_spec_outside_name];
-Signal_spec_inside_harness_path = ...
-    [this_harness_name, '/', Signal_spec_inside_name];
-Signal_spec_outside_harness_path = ...
-    [this_harness_name, '/', Signal_spec_outside_name];
 
 %%
 inside_exists = false;
@@ -90,12 +100,12 @@ sltest.harness.delete(harness_owner_name, harness_name_temp);
 %%
 sltest.harness.open(harness_owner_name, this_harness_name);
 
-if (inside_exists)
+if (inside_exists && inside_old_exists)
 Signal_spec_inside_position = get_param(...
     Signal_spec_inside_harness_path, ...
     'Position');
 end
-if (outside_exists)
+if (outside_exists&& outside_old_exists)
 Signal_spec_outside_position = get_param(...
     Signal_spec_outside_harness_path, ...
     'Position');
@@ -117,11 +127,11 @@ add_block(Signal_spec_outside_model_temp_path, ...
     Signal_spec_outside_harness_path);
 end
 
-if (inside_exists)
+if (inside_exists && inside_old_exists)
 set_param(Signal_spec_inside_harness_path, ...
     'Position', Signal_spec_inside_position);
 end
-if (outside_exists)
+if (outside_exists && outside_old_exists)
 set_param(Signal_spec_outside_harness_path, ...
     'Position', Signal_spec_outside_position);
 end
@@ -130,78 +140,24 @@ end
 close_system(temp_model_handle, 0);
 
 if strcmp(model_info.BlockDiagramType, 'Model')
-    save_system(harness_owner_name);
+    top_model_name = strsplit(harness_owner_name, '/');
+    save_system(top_model_name{1}, [], 'SaveDirtyReferencedModels', true);
 elseif strcmp(model_info.BlockDiagramType, 'Subsystem')
-    save_system(harness_owner_name);
+    save_system(harness_owner_name, [], 'SaveDirtyReferencedModels', true);
 else
-    subsystem_type = check_block_is_subsystem(harness_owner_name);
+    subsystem_type = check_block_is_subsystem_tshintaiCustomTab( ...
+        harness_owner_name);
     if (subsystem_type == 0 || subsystem_type == 1)
         model_name = strsplit(harness_owner_name, '/');
-        save_system(model_name{1});
+        save_system(model_name{1}, [], 'SaveDirtyReferencedModels', true);
     else
-        save_system(harness_owner_name);
+        save_system(harness_owner_name, [], 'SaveDirtyReferencedModels', true);
     end
 end
 
 %%
 if isvalid(generating_Signal_spec_handle)
     delete(generating_Signal_spec_handle)
-end
-
-end
-
-
-function subsystem_type = check_block_is_subsystem(block_list)
-%%
-block_list = make_cell_list(block_list);
-
-%% 
-% subsystem_typeは、0はサブシステムではない普通のブロック、
-% 1は通常のサブシステム、2は参照サブシステム、
-% 3は参照モデルを示す。
-subsystem_type = zeros(numel(block_list), 1);
-
-for i = 1:numel(block_list)
-    if strcmp(get_param(block_list{i}, 'BlockType'), ...
-            'SubSystem')
-        try
-            subsystem_ref_name = get_param(block_list{i}, ...
-                    'ReferencedSubsystem');
-        catch
-            subsystem_ref_name = '';
-        end
-
-        if isempty(subsystem_ref_name)
-            if strcmp( ...
-                    get_param(block_list{i}, 'StaticLinkStatus'), ...
-                    'resolved')
-                % ライブラリリンクされたブロックは通常のブロック扱いとする
-                subsystem_type(i) = 0;
-            else
-                subsystem_type(i) = 1;
-            end
-        else
-            subsystem_type(i) = 2;
-        end
-    else
-        if strcmp(get_param(block_list{i}, 'BlockType'), ...
-                'ModelReference')
-            subsystem_type(i) = 3;
-        end
-    end
-end
-
-end
-
-function cell_block_list = make_cell_list(block_list)
-%%
-if isempty(block_list)
-    return;
-elseif ~iscell(block_list)
-    cell_block_list = cell(1, 1);
-    cell_block_list{1} = block_list;
-else
-    cell_block_list = block_list;
 end
 
 end

@@ -67,8 +67,9 @@
                             "type": "Column",
                             "children": [
                                 {
-                                    "type": "PushButton",
-                                    "action": "connect_rename_log_line"
+                                    "type": "DropDownButton",
+                                    "action": "connect_signals_action",
+                                    "popupName": "connect_signals"
                                 },
                                 {
                                     "type": "PushButton",
