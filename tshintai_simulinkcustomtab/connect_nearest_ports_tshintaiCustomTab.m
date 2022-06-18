@@ -3,6 +3,9 @@ function connect_nearest_ports_tshintaiCustomTab()
 % コメントアウトされていないブロックの未接続ポートを、
 % 最も近い入力、出力ポート同士の組み合わせで接続する。
 %%
+max_port_num = 8;
+max_combination = int64(factorial(max_port_num));
+
 this_system = gcs;
 block_list = find_system(this_system, ...
     'SearchDepth',1, ...
@@ -35,50 +38,72 @@ else
     in_is_bigger = false;
 end
 
-combination_num = 1;
-for i = 0:(smaller_inout_num - 1)
-    combination_num = combination_num * (bigger_inout_num - i);
+if (smaller_inout_num > max_port_num)
+    error('未接続ポートの数が多すぎるため、処理を実行できません。');
+end
+
+combination_num = int64(1);
+for i = int64(0):(smaller_inout_num - int64(1))
+    combination_num = combination_num * (int64(bigger_inout_num) - i);
+end
+if (combination_num > max_combination)
+    error('未接続ポートの数が多すぎるため、処理を実行できません。');
 end
 
 %%
-% 入力と出力の全組み合わせを抽出するために、順列のリスト
-% 「perms_list」を作成する。順列のリストは、多い方のポートを
-% 少ない方のポート数分だけ抽出し、それを並べた時の順列である。
-choose_list = nchoosek(1:bigger_inout_num, smaller_inout_num);
-perms_list = zeros(combination_num, smaller_inout_num);
-perms_num = combination_num / size(choose_list, 1);
-for i = 0:(size(choose_list, 1) - 1)
-    perms_list((i * perms_num + 1):((i + 1) * perms_num), :) = ...
-        perms(choose_list(i + 1, :));
-end
+% 入力と出力の全組み合わせを抽出するために、組み合わせのリスト
+% 「choose_list」を作成する。この組み合わせの一つ一つに対して
+% 順列をリスト化すると、全てのポートの組み合わせを表現できる。
+choose_list = int64(nchoosek(1:bigger_inout_num, smaller_inout_num));
+each_choose_perms_num = int64(factorial(smaller_inout_num));
+perms_list_one_step = zeros(1, smaller_inout_num, 'int64');
+
+choose_index      = int64(1);
+perms_index       = int64(1);
 
 %%
-% combination_listには全てのポート組み合わせパターンを記録する。
-% combination_listは、行方向の1要素目からcombination_num要素目まで
-% ポート同士の組み合わせパターンを並べる。
-% また、列方向の1要素目からsmaller_inout_num要素目まで
+% combination_vecにはポート組み合わせパターンを記録する。
+% combination_vecは、列方向の1要素目から
+% smaller_inout_num要素目まで
 % [入力ポートハンドル, 出力ポートハンドル]という
 % 組み合わせのベクトルを並べる。
-combination_list = cell(combination_num, smaller_inout_num);
+combination_vec = cell(1, smaller_inout_num);
+
+% 最終的に求める最小スコアの組み合わせパターンを以下に記録する。
+combination_min_vec = combination_vec;
 
 % 同時に、全ポート組み合わせパターンに対する距離の評価を行う
-nearest_score = zeros(combination_num, 1);
+nearest_min_score = inf;
 distance_weight_factor = [1, 100];
 right_to_left_factor = 100;
-penalty_bias = 1e6;
+self_block_penalty_bias = 1e6;
 
 for i = 1:combination_num
     temp_distance = 0;
+
+    % choose_listから1ステップずつ順列を生成する
+    if (perms_index == int64(1))
+        perms_list_one_step = choose_list(choose_index, :);
+    else
+        [perms_list_one_step, status] = ...
+            one_step_permutation(perms_list_one_step, smaller_inout_num);
+
+        if (status == int64(0))
+            perms_index = int64(1);
+            break;
+        end
+    end
+
     for j = 1:smaller_inout_num
         if in_is_bigger
-            inport_index  = perms_list(i, j);
+            inport_index  = perms_list_one_step(1, j);
             outport_index = j;
         else
             inport_index  = j;
-            outport_index = perms_list(i, j);
+            outport_index = perms_list_one_step(1, j);
         end
 
-        combination_list{i, j} = [...
+        combination_vec{1, j} = [...
             disconnected_inport_list{inport_index, 3}, ...
             disconnected_outport_list{outport_index, 3}];
 
@@ -91,7 +116,7 @@ for i = 1:combination_num
         % 同じブロック内でポートを繋ごうとしている場合はペナルティを加える。
         if strcmp(disconnected_inport_list{inport_index, 1}, ...
                 disconnected_outport_list{outport_index, 1})
-            temp_distance = temp_distance + penalty_bias;
+            temp_distance = temp_distance + self_block_penalty_bias;
         end
         
         % 右から左へ線を繋ごうとしている場合はペナルティを加える。
@@ -101,17 +126,76 @@ for i = 1:combination_num
         end
     end
 
-    nearest_score(i) = temp_distance;
+    if (nearest_min_score > temp_distance)
+        combination_min_vec = combination_vec;
+        nearest_min_score = temp_distance;
+    end
+
+    perms_index = perms_index + int64(1);
+    if (perms_index > each_choose_perms_num)
+        perms_index = int64(1);
+        choose_index = choose_index + int64(1);
+    end
+
+%     if (mod(i, 1000) == 0)
+%     disp(['Progress: ', num2str(100 * double(i) / double(combination_num)), ' [%]']);
+%     end
 end
 
 %%
-[~, min_score_index] = min(nearest_score);
-
 for i = 1:smaller_inout_num
-    inout_handles = combination_list{min_score_index, i};
+    inout_handles = combination_min_vec{1, i};
     add_line(this_system, inout_handles(2), inout_handles(1), ...
         'autorouting','smart');
 end
 
 end
 
+
+function [next_array, status] = one_step_permutation(array, array_length)
+%%
+ZERO = int64(0);
+ONE = int64(1);
+array64 = int64(array);
+array_length64 = int64(array_length);
+next_array = array64;
+status = ONE;
+
+%%
+left = int64(array_length64) - ONE;
+while (left >= ONE && array64(left) >= array64(left + ONE))
+    left = left - ONE;
+end
+
+if (left < ONE)
+    status = ZERO;
+    return;
+end
+
+%%
+right = int64(array_length64);
+while(array64(left) >= array64(right))
+    right = right - ONE;
+end
+
+t = array64(left);
+array64(left) = array64(right);
+array64(right) = t;
+
+left = left + ONE;
+right = array_length64;
+
+%%
+while(left < right)
+    t = array64(left);
+    array64(left) = array64(right);
+    array64(right) = t;
+    
+    left = left + ONE;
+    right = right - ONE;
+end
+
+%%
+next_array = array64;
+
+end
