@@ -67,8 +67,8 @@
                             "type": "Column",
                             "children": [
                                 {
-                                    "type": "DropDownButton",
-                                    "action": "connect_signals_action",
+                                    "type": "SplitButton",
+                                    "action": "connect_nearest_ports",
                                     "popupName": "connect_signals"
                                 },
                                 {
