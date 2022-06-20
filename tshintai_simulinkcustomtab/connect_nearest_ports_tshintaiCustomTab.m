@@ -39,7 +39,7 @@ else
 end
 
 if (smaller_inout_num > max_port_num)
-    error('未接続ポートの数が多すぎるため、処理を実行できません。');
+    error_too_many_disconnected_ports;
 end
 
 combination_num = int64(1);
@@ -47,7 +47,22 @@ for i = int64(0):(smaller_inout_num - int64(1))
     combination_num = combination_num * (int64(bigger_inout_num) - i);
 end
 if (combination_num > max_combination)
-    error('未接続ポートの数が多すぎるため、処理を実行できません。');
+    error_too_many_disconnected_ports;
+end
+
+%%
+inport_max_Y_pos = -inf;
+for i = 1:inport_num
+    if (inport_max_Y_pos < disconnected_inport_list{i, 5}(2))
+        inport_max_Y_pos = disconnected_inport_list{i, 5}(2);
+    end
+end
+
+outport_max_Y_pos = -inf;
+for i = 1:outport_num
+    if (outport_max_Y_pos < disconnected_outport_list{i, 5}(2))
+        outport_max_Y_pos = disconnected_outport_list{i, 5}(2);
+    end
 end
 
 %%
@@ -119,10 +134,14 @@ for i = 1:combination_num
             temp_distance = temp_distance + self_block_penalty_bias;
         end
         
-        % 右から左へ線を繋ごうとしている場合はペナルティを加える。
+        % 右から左へ線を繋ごうとしている場合はペナルティを加える
+        % ただし、一番下のポート同士を繋ぐ場合はペナルティを加えない
         if (port_pos_dif(1) < 0)
-            temp_distance = temp_distance + ...
-                abs(port_pos_dif(1)) * right_to_left_factor;
+            if (int64(inport_max_Y_pos) ~= int64(disconnected_inport_list{inport_index, 5}(2)) && ...
+                int64(outport_max_Y_pos) ~= int64(disconnected_outport_list{outport_index, 5}(2)))
+                temp_distance = temp_distance + ...
+                    abs(port_pos_dif(1)) * right_to_left_factor;
+            end
         end
     end
 
@@ -151,6 +170,12 @@ end
 
 end
 
+
+function error_too_many_disconnected_ports()
+
+error('未接続ポートの数が多すぎるため、処理を実行できません。');
+
+end
 
 function [next_array, status] = one_step_permutation(array, array_length)
 %%
@@ -199,3 +224,4 @@ end
 next_array = array64;
 
 end
+

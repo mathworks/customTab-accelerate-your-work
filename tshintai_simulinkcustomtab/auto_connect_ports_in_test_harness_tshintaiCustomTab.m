@@ -5,13 +5,13 @@ function auto_connect_ports_in_test_harness_tshintaiCustomTab()
 % 合わせて修正したい。この時、このスクリプトを実行することで
 % 「Signal spec. and routing」を更新することができる。
 %%
-generating_Signal_spec_handle = warndlg('Now regenerating ...');
-
-%%
 this_harness_name = bdroot;
 if strcmp(get_param(this_harness_name, 'IsHarness'), 'off')
     return;
 end
+
+%%
+generating_Signal_spec_handle = warndlg('Now regenerating ...');
 
 %%
 Signal_spec_outside_name = ...
@@ -37,6 +37,9 @@ close_system(this_harness_name);
 
 harness_list = sltest.harness.find(bdroot);
 if isempty(harness_list)
+    if isvalid(generating_Signal_spec_handle)
+        delete(generating_Signal_spec_handle)
+    end
     return;
 end
 
