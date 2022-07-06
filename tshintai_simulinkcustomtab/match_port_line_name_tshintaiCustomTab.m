@@ -265,9 +265,6 @@ chart_list = find(ThisMachine, '-isa', 'Stateflow.Chart', ...
 for i = 1:numel(chart_list)
     chart_input_list = chart_list(i).find('-isa', 'Stateflow.Data', ...
                              '-and', 'Scope', 'Input');
-    if numel(chart_input_list) < 1
-        continue;
-    end
 
     for j = 1:numel(chart_input_list)
         port_handles = get_param(chart_input_list(j).Path, 'PortHandles');
@@ -295,9 +292,6 @@ for i = 1:numel(chart_list)
 
     chart_output_list = chart_list(i).find('-isa', 'Stateflow.Data', ...
         '-and', 'Scope', 'Output');
-    if numel(chart_output_list) < 1
-        continue;
-    end
 
     for j = 1:numel(chart_output_list)
         port_handles = get_param(chart_output_list(j).Path, 'PortHandles');

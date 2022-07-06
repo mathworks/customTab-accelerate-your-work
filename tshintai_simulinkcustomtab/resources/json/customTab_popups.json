@@ -22,6 +22,48 @@
                 {
                     "type": "ListItem",
                     "action": "connect_rename_log_line"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "connect_same_port_names"
+                }
+            ]
+        },
+        {
+            "type": "PopupList",
+            "id": "arrange_block_positions",
+            "children": [
+                {
+                    "type": "ListItem",
+                    "action": "equalize_block_positions"
+                }
+            ]
+        },
+        {
+            "type": "PopupList",
+            "id": "close",
+            "children": [
+                {
+                    "type": "ListItem",
+                    "action": "close_all_Simulink_windows"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "close_project"
+                }
+            ]
+        },
+        {
+            "type": "PopupList",
+            "id": "visualization",
+            "children": [
+                {
+                    "type": "ListItem",
+                    "action": "show_line_data_types_dimensions"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "reset_color_tab"
                 }
             ]
         }

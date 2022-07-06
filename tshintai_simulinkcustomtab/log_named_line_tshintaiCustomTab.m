@@ -96,6 +96,16 @@ list_index = 1:size(line_list_Simscape, 1);
     'InitialValue', list_index(initial_port_log_status_Simscape), ...
     'ListSize', [300, 400]);
 
+if isempty(RM_indx)
+    answer = questdlg('信号のログを全て解除しますか？', ...
+    	'ログ解除', ...
+    	'はい','いいえ','いいえ');
+    if (strcmp(answer, 'いいえ') || isempty(answer))
+        return;
+    end
+end
+
+%%
 for i = 1:numel(list_index)
     match_flag = false;
     for j = 1:numel(RM_indx)

@@ -92,6 +92,8 @@ else
     end
 
     %%
+    block_arrange_factor = 1.5;
+
     % block_pos_listの1列目はブロック中心のX位置、2列目はY位置
     block_pos_list = zeros(numel(other_blocks_path) + 1, 2);
 
@@ -105,7 +107,8 @@ else
     end
 
     if ( max(block_pos_list(:, 1)) - min(block_pos_list(:, 1)) < ...
-            max(block_pos_list(:, 2)) - min(block_pos_list(:, 2)) )
+            (max(block_pos_list(:, 2)) - min(block_pos_list(:, 2))) * ...
+             block_arrange_factor)
 
         for i = 1:numel(other_blocks_pos)
             other_blocks_pos{i} = get_param(other_blocks_path{i}, 'Position');

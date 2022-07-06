@@ -99,7 +99,30 @@ edit diff_with_latest_commit_sldd_tshintaiCustomTab
 ```
 
 ## 2.モデル セクション
-### 2.1.「設定を開く」ボタン
+### 2.1.「可視化」リスト
+### 2.1.1「次元 / データ型」ボタン
+
+
+モデルの「信号の次元」と「端子のデータ型」を表示させる。
+
+
+
+```matlab:Code
+edit show_line_data_types_dimensions_tshintaiCustomTab
+```
+
+### 2.1.2.「色とタブを初期化」ボタン
+
+
+モデル内のブロックの色をリセットし、タブを全て閉じる。
+
+
+
+```matlab:Code
+edit reset_model_color_and_close_tab_tshintaiCustomTab
+```
+
+### 2.2.「設定を開く」ボタン
 
 
 モデルの今開いている階層のコンフィギュレーションパラメーターを開く。例えば、上位階層のモデルから参照モデルを開いている時、その参照先のモデルのコンフィギュレーションパラメーターを開く。
@@ -115,7 +138,7 @@ edit diff_with_latest_commit_sldd_tshintaiCustomTab
 edit open_config_tshintaiCustomTab
 ```
 
-### 2.2.「ウィンドウで開く」ボタン
+### 2.3.「ウィンドウで開く」ボタン
 
 
 選択したブロックを新しいウィンドウで開く。選択していない場合は、現在の階層を対象に開く。
@@ -131,42 +154,41 @@ edit open_config_tshintaiCustomTab
 edit open_system_with_new_window_tshintaiCustomTab
 ```
 
-### 2.3.「戻す」ボタン
+### 2.4.「ポートで揃える」ボタン
 
 
-モデルファイルを閉じ、その後ローカルリポジトリの最新コミットの状態に戻す。
+選択したブロック同士のポート位置が横一列に揃うようにブロックの上下位置を並べ替える。また、同じ線で接続されたブロックグループを探し、そのグループごとに並べる。
 
 
 
 
-Gitのコマンドを使用しているため、Gitがインストールされていること、モデルファイルがGit管理されていることが前提となる。
+合わせる位置は、同じブロックグループの終端ブロックの接続先ポート位置である。出力ポートの先にブロックが繋がっていない場合、入力ポートの先に繋がっているブロックの出力ポート位置に合わせる。
 
 
 
 ```matlab:Code
-edit revert_Simulink_model_tshintaiCustomTab
+edit arrange_port_position_tshintaiCustomTab
 ```
 
-### 2.4.「次元 / データ型」ボタン
+### 2.5.「間隔を均等化」ボタン
 
 
-モデルの「信号の次元」と「端子のデータ型」を表示させる。
+選択した二つのブロックの間隔と同じになるように、他のブロック同士の間隔を自動的に調整する。調整されるブロックは、その二つのブロックと信号線で繋がれているブロックと、そのブロックに直接繋がっている他のブロックである。
+
+
+
+
+また、そのブロックは1番目のInport, Outportを介して繋がっている場合に、かつ、信号線の流れが左から右に流れる向きである場合にのみ繋がっていると判定し、間隔を調整する。
+
+
+
+
+また、ブロックを一つだけ選択した場合は、そのブロックがInportのみ、またはOutportのみ存在する場合に、その1番目のポートから繋がる先のブロックの間隔を調整する。
 
 
 
 ```matlab:Code
-edit show_line_data_types_dimensions_tshintaiCustomTab
-```
-
-### 2.5.「色とタブを初期化」ボタン
-
-
-モデル内のブロックの色をリセットし、タブを全て閉じる。
-
-
-
-```matlab:Code
-edit reset_model_color_and_close_tab_tshintaiCustomTab
+edit equalize_block_positions_tshintaiCustomTab
 ```
 
 ### 2.6.「サイズを合わせる」ボタン
@@ -185,7 +207,7 @@ edit reset_model_color_and_close_tab_tshintaiCustomTab
 edit match_block_size_tshintaiCustomTab
 ```
 
-### 2.7.「信号線を接続」ボタン
+### 2.7.信号接続系ドロップダウン
 ### 2.7.1.「最近傍を接続」ボタン
 
 
@@ -194,7 +216,7 @@ edit match_block_size_tshintaiCustomTab
 
 
 ```matlab:Code
-edit connect_nearest_ports_tshintaiCustomTab.m
+edit connect_nearest_ports_tshintaiCustomTab
 ```
 
 ### 2.7.2.「選択して接続」ボタン
@@ -214,7 +236,18 @@ edit connect_nearest_ports_tshintaiCustomTab.m
 
 
 ```matlab:Code
-edit connect_rename_log_line_tshintaiCustomTab.m
+edit connect_rename_log_line_tshintaiCustomTab
+```
+
+### 2.7.3.「同じポート名を接続」ボタン
+
+
+現在の階層の中から未接続のInport, Outport, Subsystem, Stateflowブロックのポートを探し、同じ名前のポート名同士を接続する。
+
+
+
+```matlab:Code
+edit connect_same_port_names_tshintaiCustomTab
 ```
 
 ### 2.8.「信号名を伝搬」ボタン
@@ -234,20 +267,15 @@ edit connect_rename_log_line_tshintaiCustomTab.m
 edit match_port_line_name_tshintaiCustomTab
 ```
 
-### 2.9.「ポートで揃える」ボタン
+### 2.9.「ポート名を伝搬」ボタン
 
 
-選択したブロック同士のポート位置が横一列に揃うようにブロックの上下位置を並べ替える。また、同じ線で接続されたブロックグループを探し、そのグループごとに並べる。
-
-
-
-
-合わせる位置は、同じブロックグループの終端ブロックの接続先ポート位置である。出力ポートの先にブロックが繋がっていない場合、入力ポートの先に繋がっているブロックの出力ポート位置に合わせる。
+信号線が選択されていない場合、今の階層のInport, Outportブロックのブロック名を接続されている信号線の信号名へコピーする。信号線が選択されている場合、その信号に対してのみ、コピーを実行する。
 
 
 
 ```matlab:Code
-edit arrange_port_position_tshintaiCustomTab
+edit match_port_to_line_name_tshintaiCustomTab
 ```
 
 ## 3.ライブラリ セクション
@@ -396,7 +424,8 @@ edit initialize_SDI_tshintaiCustomTab
 ```
 
 ## 7.保存 / 閉じる セクション
-### 7.1.「閉じて再度開く」ボタン
+### 7.1.「閉じる系」ドロップダン
+### 7.1.1.「閉じて再度開く」ボタン
 
 
 モデルファイルを保存せずに閉じ、そのモデルファイルを再度開く。このスクリプトは、モデルを保存された状態に戻すことが目的である。
@@ -405,6 +434,28 @@ edit initialize_SDI_tshintaiCustomTab
 
 ```matlab:Code
 edit close_and_reopen_model_tshintaiCustomTab
+```
+
+### 7.1.2.「すべて閉じる」ボタン
+
+
+開いているSimulinkモデルを全て閉じる。モデルは保存して閉じる。
+
+
+
+```matlab:Code
+edit close_all_Simulink_windows_tshintaiCustomTab
+```
+
+### 7.1.3.「PJを閉じる」ボタン
+
+
+プロジェクトを開いている場合、プロジェクトを閉じる。開いていない場合、何もしない。
+
+
+
+```matlab:Code
+edit close_project_tshintaiCustomTab
 ```
 
 ### 7.2.「変更を保存」ボタン
@@ -423,26 +474,20 @@ edit close_and_reopen_model_tshintaiCustomTab
 edit save_dirty_models_tshintaiCustomTab
 ```
 
-### 7.3.「すべて閉じる」ボタン
+### 7.3.「戻す」ボタン
 
 
-開いているSimulinkモデルを全て閉じる。モデルは保存して閉じる。
+モデルファイルを閉じ、その後ローカルリポジトリの最新コミットの状態に戻す。
 
 
 
-```matlab:Code
-edit close_all_Simulink_windows_tshintaiCustomTab
-```
 
-### 7.4.「PJを閉じる」ボタン
-
-
-プロジェクトを開いている場合、プロジェクトを閉じる。開いていない場合、何もしない。
+Gitのコマンドを使用しているため、Gitがインストールされていること、モデルファイルがGit管理されていることが前提となる。
 
 
 
 ```matlab:Code
-edit close_project_tshintaiCustomTab
+edit revert_Simulink_model_tshintaiCustomTab
 ```
 
 # プロジェクトにカスタムタブの設定を組み込む方法

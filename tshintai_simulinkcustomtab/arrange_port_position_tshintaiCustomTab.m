@@ -18,7 +18,7 @@ if numel(selected_block_list) < 1
     return;
 end
 
-if strcmp(selected_block_list{1}, gcs)
+if strcmp(selected_block_list{1}, current_layer)
     if numel(selected_block_list) < 2
         return;
     end
@@ -64,6 +64,9 @@ for i = 1:numel(src_block_names)
         find_flag = false;
         terminal_block = dst_block_info{i, 1};
         previous_block = src_block_names{i};
+        while_count = 0;
+        while_max = 10000;
+
         while(~find_flag)
             find_index = 0;
             for j = 1:numel(dst_block_info(:, 1))
@@ -83,6 +86,13 @@ for i = 1:numel(src_block_names)
             else
                 terminal_block = previous_block;
                 find_flag = true;
+            end
+
+            while_count = while_count + 1;
+            if (while_count >= while_max)
+                % whileループが上限を超えた場合、無限ループしていると判定し、
+                % 関数を終了させる。
+                return;
             end
         end
 

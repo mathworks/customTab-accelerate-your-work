@@ -82,6 +82,24 @@ if ~isempty(selected_block_list)
 
         delete_block(selected_block_list{idx__s});
         set_param(post_block_path, 'Position', block_original_pos);
+    else
+        if (numel(selected_block_list) > 1.5)
+            harness_list = sltest.harness.find(model_name);
+            if isempty(harness_list)
+                return;
+            end
+
+            for i = 1:numel(selected_block_list)
+                for j = 1:numel(harness_list)
+                    if (~strcmp(gcs, selected_block_list{i}) && ...
+                            strcmp(harness_list(j).ownerFullPath, ...
+                            selected_block_list{i}))
+                        sltest.harness.delete(harness_list(j).ownerFullPath, ...
+                            harness_list(j).name);
+                    end
+                end
+            end
+        end
     end
 else
     %%

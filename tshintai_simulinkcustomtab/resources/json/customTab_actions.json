@@ -104,7 +104,7 @@
             "type": "Action",
             "id": "revert_Simulink_model",
             "text": "戻す",
-            "icon": "flowchart_icon",
+            "icon": "submarine_icon",
             "description": "Simulink モデルを最新コミット状態に戻します",
             "command": "revert_Simulink_model_tshintaiCustomTab",
             "commandType": "Script"
@@ -245,6 +245,39 @@
             "icon": "flowchart_icon",
             "description": "未接続入出力ポートの最も近いもの同士を自動的に接続します",
             "command": "connect_nearest_ports_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "equalize_block_positions",
+            "text": "間隔を均等化",
+            "icon": "flowchart_icon",
+            "description": "選択した二つのブロックの間隔に、他のブロック間隔を合わせます",
+            "command": "equalize_block_positions_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "visualization_action",
+            "text": "可視化",
+            "icon": "flowchart_icon"
+        },
+        {
+            "type": "Action",
+            "id": "match_port_to_line_name",
+            "text": "ポート名を伝搬",
+            "icon": "flowchart_icon",
+            "description": "ポートに接続されている信号線の名前をポートの名前と一致させます",
+            "command": "match_port_to_line_name_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "connect_same_port_names",
+            "text": "同じポート名を接続",
+            "icon": "flowchart_icon",
+            "description": "信号線が接続されていない同じ名前同士の入出力ポートを接続します",
+            "command": "connect_same_port_names_tshintaiCustomTab",
             "commandType": "Script"
         },
         {
