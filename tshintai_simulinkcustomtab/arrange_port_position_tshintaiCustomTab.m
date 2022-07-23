@@ -1,13 +1,14 @@
 function arrange_port_position_tshintaiCustomTab()
 %% 説明
 % 選択したブロック同士のポート位置が横一列に揃うように
-% ブロックの上下位置を並べ替えます。
+% ブロックの上下位置を並べ替える。
+% 何も選択されていない場合は、今の階層のブロック全てに対して実行される。
 % また、同じ線で接続されたブロックグループを探し、
-% そのグループごとに並べます。
+% そのグループごとに並べる。
 % 合わせる位置は、同じブロックグループの終端ブロックの
-% 接続先ポート位置です。
+% 接続先ポート位置である。
 % 出力ポートの先にブロックが繋がっていない場合、
-% 入力ポートの先に繋がっているブロックの出力ポート位置に合わせます。
+% 入力ポートの先に繋がっているブロックの出力ポート位置に合わせる。
 %%
 current_layer = gcs;
 selected_block_list = find_system(current_layer, ...
@@ -15,8 +16,16 @@ selected_block_list = find_system(current_layer, ...
         'Selected','on');
 
 if numel(selected_block_list) < 1
-    return;
+    layer_block_list = find_system(current_layer, ...
+        'SearchDepth',1);
+    if numel(layer_block_list) > 1.5
+        selected_block_list = layer_block_list;
+    else
+        return;
+    end
+
 end
+
 
 if strcmp(selected_block_list{1}, current_layer)
     if numel(selected_block_list) < 2

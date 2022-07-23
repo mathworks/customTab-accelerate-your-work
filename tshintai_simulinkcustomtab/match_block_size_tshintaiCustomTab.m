@@ -1,12 +1,15 @@
 function match_block_size_tshintaiCustomTab()
 %% 説明
 % 選択状態のブロックのサイズを、フォーカスされたブロックのサイズに
-% 一致させます。
+% 一致させる。
+% 選択されたブロックが1個だけの時、そのブロックと最も近いものに
+% サイズを合わせる。
 % 選択状態のブロックが横方向より縦方向に長く配置されている場合、
-% ブロックの位置をフォーカスされたブロックに合わせます。
+% ブロックの位置をフォーカスされたブロックに合わせる。
 %%
 % 最初にStateflowのChart内Stateが選択されているかどうかを判別し、
 % そうであればChart用の処理を実行する。
+this_layer = gcs;
 chart_selected_objects = sfgco;
 
 if ~isempty(chart_selected_objects)
@@ -54,22 +57,33 @@ else
     % Simulinkブロック用の処理
 
     ref_block_path = gcb;
-    selected_block_list = find_system(gcs, ...
+    selected_block_list = find_system(this_layer, ...
         'SearchDepth',1, ...
         'Selected','on');
 
-    if ( (numel(selected_block_list) > 1) && ...
-            strcmp(selected_block_list{1}, gcs) )
+    if ( (numel(selected_block_list) > 1.5) && ...
+            strcmp(selected_block_list{1}, this_layer) )
         selected_block_list = selected_block_list(2:end);
+    elseif numel(selected_block_list) > 0.5
+        if strcmp(selected_block_list{1}, this_layer)
+            return;
+        end
     end
 
     if isempty(selected_block_list)
         return;
-    end
-
-    %%
-    other_blocks_path = selected_block_list(~strcmp(selected_block_list, ...
+    elseif numel(selected_block_list) < 1.5
+        nearest_block = get_nearest_block_path(selected_block_list{1}, ...
+                            this_layer);
+        if isempty(nearest_block)
+            return;
+        end
+        other_blocks_path = selected_block_list;
+        ref_block_path = nearest_block;
+    else
+        other_blocks_path = selected_block_list(~strcmp(selected_block_list, ...
         ref_block_path));
+    end
 
     %%
     % pos == [左端のX座標, 上端のY座標, 右端のX座標, 下端のY座標]
@@ -125,5 +139,71 @@ else
     end
 
 end
+
+end
+
+function nearest_block_path = get_nearest_block_path(...
+    target_block_path, this_layer)
+%%
+target_position = get_param(target_block_path, 'Position');
+target_vertex = [target_position(1), target_position(2);
+                 target_position(1), target_position(4);
+                 target_position(3), target_position(2);
+                 target_position(3), target_position(4)];
+
+block_list_temp = find_system(this_layer, ...
+        'SearchDepth',1);
+
+if numel(block_list_temp) < 2.5
+    nearest_block_path = '';
+    return;
+end
+
+if strcmp(block_list_temp{1}, this_layer)
+    block_list = block_list_temp(2:end);
+else
+    block_list = block_list_temp;
+end
+
+match_vector = strcmp(block_list, target_block_path);
+if sum(int32(match_vector)) < 1
+    nearest_block_path = '';
+    return;
+end
+
+other_block_list = block_list(~match_vector);
+
+%%
+block_distance = inf;
+nearest_index = 0;
+for i = 1:numel(other_block_list)
+    other_position = get_param(other_block_list{i}, 'Position');
+    other_vertex = [other_position(1), other_position(2);
+                    other_position(1), other_position(4);
+                    other_position(3), other_position(2);
+                    other_position(3), other_position(4)];
+
+    this_distance = zeros(16, 1);
+    dist_index = 1;
+
+    % 二つのブロックの4個の頂点間の距離を測り、最も短い距離を
+    % ブロック間距離とする。
+    for j = 1:4
+        for k = 1:4
+            this_distance(dist_index) = ...
+                sum((other_vertex(j, :) - target_vertex(k, :)) .^2);
+            dist_index = dist_index + 1;
+        end        
+    end
+
+    this_min_distance = min(this_distance);
+
+    if (this_min_distance < block_distance)
+        block_distance = this_min_distance;
+        nearest_index = i;
+    end
+end
+
+nearest_block_path = other_block_list{nearest_index};
 
 end

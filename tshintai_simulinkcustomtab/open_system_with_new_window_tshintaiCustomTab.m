@@ -84,6 +84,9 @@ if strcmp(model_root, model_name)
 end
 
 %%
+open_system(model_name);
+
+%%
 location_offset = 30;
 root_location = get_param(model_root, 'Location');
 try
@@ -109,6 +112,9 @@ next_position = [...
 
 %%
 set_param(model_name, 'Location', next_position);
+
+%%
+set_param(model_name, 'ZoomFactor', 'FitSystem');
 
 %% 
 % ここからの処理はリスクがあるため、デフォルトでは無効化している。

@@ -2,18 +2,39 @@ function connect_nearest_ports_tshintaiCustomTab()
 %% 説明
 % コメントアウトされていないブロックの未接続ポートを、
 % 最も近い入力、出力ポート同士の組み合わせで接続する。
+% ブロックが選択されていれば、選択されているブロック群の
+% 範囲内で接続を行う。
 %%
 max_port_num = 8;
 max_combination = int64(factorial(max_port_num));
 
+no_selected_flag = false;
+
 this_system = gcs;
-block_list = find_system(this_system, ...
+selected_block_list = find_system(this_system, ...
     'SearchDepth',1, ...
-    'Commented', 'off');
-if (numel(block_list) == 1)
-    return;
-elseif strcmp(block_list{1}, this_system)
-    block_list = block_list(2:end);
+    'Commented', 'off', ...
+    'Selected','on');
+if (numel(selected_block_list) < 1.5)
+    no_selected_flag = true;
+elseif strcmp(selected_block_list{1}, this_system)
+    block_list = selected_block_list(2:end);
+    if (numel(block_list) < 1.5)
+        no_selected_flag = true;
+    end
+else
+    block_list = selected_block_list;
+end
+
+if (no_selected_flag)
+    block_list = find_system(this_system, ...
+        'SearchDepth',1, ...
+        'Commented', 'off');
+    if (numel(block_list) == 1)
+        return;
+    elseif strcmp(block_list{1}, this_system)
+        block_list = block_list(2:end);
+    end
 end
 
 %%

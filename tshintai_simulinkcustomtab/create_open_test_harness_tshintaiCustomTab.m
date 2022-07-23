@@ -263,6 +263,8 @@ if (subsystem_type == 2)
     setActiveConfigSet(harness_name, harness_config_name);
 
     set_param(activeConfigObj, 'Name', original_config_name);
+
+    save_system(harness_name);
 end
 
 end
