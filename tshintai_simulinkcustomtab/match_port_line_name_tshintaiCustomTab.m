@@ -267,24 +267,31 @@ for i = 1:numel(chart_list)
                              '-and', 'Scope', 'Input');
 
     for j = 1:numel(chart_input_list)
-        port_handles = get_param(chart_input_list(j).Path, 'PortHandles');
-        line_handle = get_param(...
-            port_handles.Inport(chart_input_list(j).Port), 'Line');
-        line_name = get_param(line_handle, 'Name');
-        src_port_handle = get_param(line_handle, 'SrcPortHandle');
-        line_prop_name = get_param(src_port_handle, 'PropagatedSignals');
+        try
+            port_handles = get_param(chart_input_list(j).Path, 'PortHandles');
+        catch
+            port_handles = '';
+        end
 
-        if ~isempty(line_name)
-            try
-                chart_input_list(j).Name = avoid_unsuitable_char(line_name);
-            catch
-                % 編集不可であった場合は何もしない
-            end
-        elseif ~isempty(line_prop_name)
-            try
-                chart_input_list(j).Name = avoid_unsuitable_char(line_prop_name);
-            catch
-                % 編集不可であった場合は何もしない
+        if ~isempty(port_handles)
+            line_handle = get_param(...
+                port_handles.Inport(chart_input_list(j).Port), 'Line');
+            line_name = get_param(line_handle, 'Name');
+            src_port_handle = get_param(line_handle, 'SrcPortHandle');
+            line_prop_name = get_param(src_port_handle, 'PropagatedSignals');
+
+            if ~isempty(line_name)
+                try
+                    chart_input_list(j).Name = avoid_unsuitable_char(line_name);
+                catch
+                    % 編集不可であった場合は何もしない
+                end
+            elseif ~isempty(line_prop_name)
+                try
+                    chart_input_list(j).Name = avoid_unsuitable_char(line_prop_name);
+                catch
+                    % 編集不可であった場合は何もしない
+                end
             end
         end
 
@@ -311,7 +318,38 @@ for i = 1:numel(chart_list)
 
 end
 
+%% MATLAB Function ブロックのポート名に対しても個別に対処する。
+bd_object = get_param(model_name, "Object");
+MF_block_info = find(bd_object, "-isa", "Stateflow.EMChart");
+
+for i = 1:numel(MF_block_info)
+    inport_object = MF_block_info(i).Inputs;
+    outport_object = MF_block_info(i).Outputs;
+    MF_port_handles = get_param(MF_block_info(i).Path, 'PortHandles');
+
+    for j = 1:numel(inport_object)
+        line_handle = get_param(MF_port_handles.Inport(j), 'Line');
+        if ~isempty(line_handle)
+            line_name = get_param(line_handle, 'Name');
+            if ~isempty(line_name)
+                inport_object(j).Name = line_name;
+            end
+        end
+    end
+
+    for j = 1:numel(outport_object)
+        line_handle = get_param(MF_port_handles.Outport(j), 'Line');
+        if ~isempty(line_handle)
+            line_name = get_param(line_handle, 'Name');
+            if ~isempty(line_name)
+                outport_object(j).Name = line_name;
+            end
+        end
+    end
 end
+
+end
+
 
 function set_line_name(line_handle, new_line_name)
 
