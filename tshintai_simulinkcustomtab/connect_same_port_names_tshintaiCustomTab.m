@@ -104,7 +104,8 @@ for i = 1:numel(inport_names)
             ~strcmp(disconnected_inport_list{i, 1}, ...
                     all_outport_list{j, 1}) )
             try
-                delete_unconnected_line(all_outport_list{j, 3});
+                delete_unconnected_outport_line(all_outport_list{j, 3});
+                delete_unconnected_inport_line(disconnected_inport_list{i, 3});
                 add_line(this_layer, ...
                     all_outport_list{j, 3}, ...
                     disconnected_inport_list{i, 3}, ...
@@ -119,13 +120,20 @@ end
 end
 
 
-function delete_unconnected_line(outport_handle)
+function delete_unconnected_outport_line(outport_handle)
     line_handle = get_param(outport_handle, 'Line');
     if (line_handle > -0.5)
         dst_block_name = get_param(line_handle, 'DstBlock');
         if isempty(dst_block_name)
             delete_line(line_handle);
         end
+    end
+end
+
+function delete_unconnected_inport_line(inport_handle)
+    line_handle = get_param(inport_handle, 'Line');
+    if (line_handle > -0.5)
+        delete_line(line_handle);
     end
 end
 

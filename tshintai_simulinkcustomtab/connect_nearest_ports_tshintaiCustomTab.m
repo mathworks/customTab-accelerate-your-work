@@ -185,6 +185,7 @@ end
 %%
 for i = 1:smaller_inout_num
     inout_handles = combination_min_vec{1, i};
+    delete_unconnected_line(inout_handles(1));
     delete_unconnected_line(inout_handles(2));
     add_line(this_system, inout_handles(2), inout_handles(1), ...
         'autorouting','smart');
