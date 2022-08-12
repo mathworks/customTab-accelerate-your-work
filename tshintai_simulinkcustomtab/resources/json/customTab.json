@@ -68,10 +68,22 @@
                             "type": "Column",
                             "children": [
                                 {
-                                    "type": "SplitButton",
-                                    "action": "connect_nearest_ports",
-                                    "popupName": "connect_signals"
+                                    "type": "PushButton",
+                                    "action": "connect_nearest_ports"
                                 },
+                                {
+                                    "type": "PushButton",
+                                    "action": "connect_rename_log_line"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "connect_same_port_names"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
                                 {
                                     "type": "PushButton",
                                     "action": "match_port_line_name"
@@ -128,7 +140,7 @@
                 },
                 {
                     "type": "Section",
-                    "title": "シミュレーション",
+                    "title": "シミュレーションと可視化",
                     "children": [
                         {
                             "type": "Column",
@@ -136,33 +148,16 @@
                                 {
                                     "type": "PushButton",
                                     "action": "root_run"
-                                }
-
-                            ]
-                        },
-                        {
-                            "type": "Column",
-                            "children": [
+                                },
                                 {
                                     "type": "PushButton",
                                     "action": "stopSimulationAction"
-                                }
-
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "Section",
-                    "title": "SDI",
-                    "children": [
-                        {
-                            "type": "Column",
-                            "children": [
+                                },
                                 {
                                     "type": "PushButton",
                                     "action": "openSimDataInspectorAction"
                                 }
+
                             ]
                         },
                         {

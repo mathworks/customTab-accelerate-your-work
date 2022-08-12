@@ -274,9 +274,9 @@
         {
             "type": "Action",
             "id": "connect_same_port_names",
-            "text": "同じポート名を接続",
+            "text": "ポート名を接続",
             "icon": "flowchart_icon",
-            "description": "信号線が接続されていない同じ名前同士の入出力ポートを接続します",
+            "description": "信号線が接続されていない入出力ポートを、同じ名前のポートに接続します",
             "command": "connect_same_port_names_tshintaiCustomTab",
             "commandType": "Script"
         },

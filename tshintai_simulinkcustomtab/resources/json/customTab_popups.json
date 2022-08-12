@@ -17,20 +17,6 @@
         },
         {
             "type": "PopupList",
-            "id": "connect_signals",
-            "children": [
-                {
-                    "type": "ListItem",
-                    "action": "connect_rename_log_line"
-                },
-                {
-                    "type": "ListItem",
-                    "action": "connect_same_port_names"
-                }
-            ]
-        },
-        {
-            "type": "PopupList",
             "id": "arrange_block_positions",
             "children": [
                 {

@@ -207,11 +207,15 @@ edit equalize_block_positions_tshintaiCustomTab
 edit match_block_size_tshintaiCustomTab
 ```
 
-### 2.7.信号接続系ドロップダウン
-### 2.7.1.「最近傍を接続」ボタン
+### 2.7.「最近傍を接続」ボタン
 
 
 コメントアウトされていないブロックの未接続ポートを、最も近い入力、出力ポート同士の組み合わせで接続する。
+
+
+
+
+ブロックが選択されていれば、選択されているブロック群の範囲内で接続を行う。
 
 
 
@@ -219,7 +223,7 @@ edit match_block_size_tshintaiCustomTab
 edit connect_nearest_ports_tshintaiCustomTab
 ```
 
-### 2.7.2.「選択して接続」ボタン
+### 2.8.「選択して接続」ボタン
 
 
 ブロックや信号線の選択状態に応じて以下のどちらかの処理を行う。
@@ -239,7 +243,7 @@ edit connect_nearest_ports_tshintaiCustomTab
 edit connect_rename_log_line_tshintaiCustomTab
 ```
 
-### 2.7.3.「同じポート名を接続」ボタン
+### 2.9.「ポート名を接続」ボタン
 
 
 現在の階層の中から未接続のInport, Outport, Subsystem, Stateflowブロックのポートを探し、同じ名前のポート名同士を接続する。
@@ -250,7 +254,7 @@ edit connect_rename_log_line_tshintaiCustomTab
 edit connect_same_port_names_tshintaiCustomTab
 ```
 
-### 2.8.「信号名を伝搬」ボタン
+### 2.10.「信号名を伝搬」ボタン
 
 
 今の階層以下のモデル内を検索し、信号線が接続されているポートに対して以下の操作を行う。
@@ -267,7 +271,7 @@ edit connect_same_port_names_tshintaiCustomTab
 edit match_port_line_name_tshintaiCustomTab
 ```
 
-### 2.9.「ポート名を伝搬」ボタン
+### 2.11.「ポート名を伝搬」ボタン
 
 
 信号線が選択されていない場合、今の階層のInport, Outportブロックのブロック名を接続されている信号線の信号名へコピーする。信号線が選択されている場合、その信号に対してのみ、コピーを実行する。
@@ -355,7 +359,7 @@ edit close_delete_test_harness_tshintaiCustomTab
 edit auto_connect_ports_in_test_harness_tshintaiCustomTab
 ```
 
-## 5.シミュレーション セクション
+## 5.シミュレーションと可視化 セクション
 ### 5.1.「ルート実行」ボタン
 
 
@@ -367,9 +371,8 @@ edit auto_connect_ports_in_test_harness_tshintaiCustomTab
 edit root_run_tshintaiCustomTab
 ```
 
-## 6.SDI セクション
-### 6.1.「View設定」ボタン
-### 6.1.1.「Viewを保存」ボタン
+### 5.2.「View設定」ボタン
+### 5.2.1.「Viewを保存」ボタン
 
 
 今のシミュレーションデータインスペクターのViewをファイルに保存する。ファイル名にはモデル名を含める。
@@ -385,7 +388,7 @@ edit root_run_tshintaiCustomTab
 edit save_this_SDI_view_tshintaiCustomTab
 ```
 
-### 6.1.2.「Viewを読み込み」ボタン
+### 5.2.2.「Viewを読み込み」ボタン
 
 
 「Viewを保存」で保存された、モデル名に紐づいた設定ファイルを読み込む。
@@ -396,7 +399,7 @@ edit save_this_SDI_view_tshintaiCustomTab
 edit load_this_model_view_tshintaiCustomTab
 ```
 
-### 6.2.「名前付信号をログ」ボタン
+### 5.3.「名前付信号をログ」ボタン
 
 
 ブロックに接続されていて、かつ名前が付いている信号線をシミュレーションデータインスペクターにログするように設定する。また、Simscape変数のログ設定のOn, Offの切り替えも行う。
@@ -412,7 +415,7 @@ edit load_this_model_view_tshintaiCustomTab
 edit log_named_line_tshintaiCustomTab
 ```
 
-### 6.3.「初期化」ボタン
+### 5.4.「初期化」ボタン
 
 
 シミュレーションデータインスペクターの環境設定とアーカイブを初期化する。
@@ -423,9 +426,9 @@ edit log_named_line_tshintaiCustomTab
 edit initialize_SDI_tshintaiCustomTab
 ```
 
-## 7.保存 / 閉じる セクション
-### 7.1.「閉じる系」ドロップダン
-### 7.1.1.「閉じて再度開く」ボタン
+## 6.保存 / 閉じる セクション
+### 6.1.「閉じる系」ドロップダン
+### 6.1.1.「閉じて再度開く」ボタン
 
 
 モデルファイルを保存せずに閉じ、そのモデルファイルを再度開く。このスクリプトは、モデルを保存された状態に戻すことが目的である。
@@ -436,7 +439,7 @@ edit initialize_SDI_tshintaiCustomTab
 edit close_and_reopen_model_tshintaiCustomTab
 ```
 
-### 7.1.2.「すべて閉じる」ボタン
+### 6.1.2.「すべて閉じる」ボタン
 
 
 開いているSimulinkモデルを全て閉じる。モデルは保存して閉じる。
@@ -447,7 +450,7 @@ edit close_and_reopen_model_tshintaiCustomTab
 edit close_all_Simulink_windows_tshintaiCustomTab
 ```
 
-### 7.1.3.「PJを閉じる」ボタン
+### 6.1.3.「PJを閉じる」ボタン
 
 
 プロジェクトを開いている場合、プロジェクトを閉じる。開いていない場合、何もしない。
@@ -458,7 +461,7 @@ edit close_all_Simulink_windows_tshintaiCustomTab
 edit close_project_tshintaiCustomTab
 ```
 
-### 7.2.「変更を保存」ボタン
+### 6.2.「変更を保存」ボタン
 
 
 このボタンをクリックしたモデルの参照先モデルと自身を確認し、変更されているものだけを保存する。
@@ -474,7 +477,7 @@ edit close_project_tshintaiCustomTab
 edit save_dirty_models_tshintaiCustomTab
 ```
 
-### 7.3.「戻す」ボタン
+### 6.3.「戻す」ボタン
 
 
 モデルファイルを閉じ、その後ローカルリポジトリの最新コミットの状態に戻す。
