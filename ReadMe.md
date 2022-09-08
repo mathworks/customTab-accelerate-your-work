@@ -246,7 +246,12 @@ edit connect_rename_log_line_tshintaiCustomTab
 ### 2.9.「ポート名を接続」ボタン
 
 
-現在の階層の中から未接続のInport, Outport, Subsystem, Stateflowブロックのポートを探し、同じ名前のポート名同士を接続する。
+現在の階層の中から未接続のInport, Outport, Subsystem, Stateflowブロック、MATLAB Function ブロックのポートを探し、同じ名前のポート名同士を接続する。
+
+
+
+
+また、Inportブロックについて、同じポート名が無いが、信号名で同じものがあれば、その信号に対して接続する。
 
 
 
@@ -306,7 +311,7 @@ edit disable_and_open_lib_block_tshintaiCustomTab
 ```
 
 ## 4.テストハーネス セクション
-### 4.1.「作成 / 開く」ボタン
+### 4.1.1.「作成 / 開く」ボタン
 
 
 選択したブロック、サブシステム、参照モデルなどに対してテストハーネスを作成して開く。
@@ -330,6 +335,17 @@ edit disable_and_open_lib_block_tshintaiCustomTab
 
 ```matlab:Code
 edit create_open_test_harness_tshintaiCustomTab
+```
+
+### 4.1.2.「入力を継承してテストハーネスを作成」ボタン
+
+
+現在のモデルを実行した結果、そのサブシステムに入力される信号データをそのままテストハーネスの入力データとして用いる形で、テストハーネスを新規作成する。
+
+
+
+```matlab:Code
+edit create_test_harness_with_input_tshintaiCustomTab
 ```
 
 ### 4.2.「閉じる / 削除」ボタン
