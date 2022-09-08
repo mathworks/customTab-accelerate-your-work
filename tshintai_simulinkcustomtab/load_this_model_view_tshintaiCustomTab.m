@@ -7,7 +7,8 @@ model_name = bdroot;
 SDI_view_file_name = [model_name, '__SDI__view__', '.mldatx'];
 
 if exist(SDI_view_file_name, 'file')
-    Simulink.sdi.loadView(SDI_view_file_name);
+    file_path = which(SDI_view_file_name);
+    Simulink.sdi.loadView(file_path);
 end
 
 end

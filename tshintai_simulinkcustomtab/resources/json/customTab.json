@@ -123,8 +123,9 @@
                             "type": "Column",
                             "children": [
                                 {
-                                    "type": "PushButton",
-                                    "action": "create_open_test_harness"
+                                    "type": "SplitButton",
+                                    "action": "create_open_test_harness",
+                                    "popupName": "create_test_harness"
                                 },
                                 {
                                     "type": "PushButton",

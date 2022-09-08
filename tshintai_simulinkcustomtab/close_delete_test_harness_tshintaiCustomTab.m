@@ -6,7 +6,8 @@ function close_delete_test_harness_tshintaiCustomTab()
 %%
 model_name = bdroot;
 selected_block_list = find_system(gcs, ...
-        'SearchDepth',1, ...
+        'LookUnderMasks', 'all', ...
+        'SearchDepth', 1, ...
         'Selected','on');
 
 %%
@@ -83,7 +84,9 @@ if ~isempty(selected_block_list)
         delete_block(selected_block_list{idx__s});
         set_param(post_block_path, 'Position', block_original_pos);
     else
-        if (numel(selected_block_list) > 1.5)
+        if (numel(selected_block_list) > 1.5 || ...
+            (numel(selected_block_list) < 1.5 && ...
+             ~strcmp(selected_block_list, model_name)))
             harness_list = sltest.harness.find(model_name);
             if isempty(harness_list)
                 return;

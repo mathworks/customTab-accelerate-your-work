@@ -1,12 +1,15 @@
 function connect_same_port_names_tshintaiCustomTab()
 %%
 % 現在の階層の中から未接続のInport, Outport, 
-% Subsystem, Stateflowブロックのポートを探し、
-% 同じ名前のポート名同士を接続する。
+% Subsystem, Stateflowブロック、MATLAB Function ブロック
+% のポートを探し、同じ名前のポート名同士を接続する。
+% また、Inportブロックについて、同じポート名が無いが、
+% 信号名で同じものがあれば、その信号に対して接続する。
 %%
 this_layer = gcs;
 block_list = find_system(this_layer, ...
-            'SearchDepth',1);
+            'LookUnderMasks', 'all', ...
+            'SearchDepth', 1);
 block_list = block_list(2:end);
 
 %%
@@ -92,12 +95,15 @@ for i = 1:numel(MF_block_info)
 end
 
 %%
-inport_names = get_port_names(disconnected_inport_list, ...
+inport_names = get_port_names_tshintaiCustomTab(...
+                    disconnected_inport_list, ...
                     chart_inport_names, MF_inport_names);
-outport_names = get_port_names(all_outport_list, ...
+outport_names = get_port_names_tshintaiCustomTab(...
+                    all_outport_list, ...
                     chart_outport_names, MF_outport_names);
 
 %%
+line_connected_flag = false(size(disconnected_inport_list, 1), 1);
 for i = 1:numel(inport_names)
     for j = 1:numel(outport_names)
         if (strcmp(inport_names{i}, outport_names{j}) && ...
@@ -110,8 +116,51 @@ for i = 1:numel(inport_names)
                     all_outport_list{j, 3}, ...
                     disconnected_inport_list{i, 3}, ...
                     'autorouting','smart');
+                line_connected_flag(i) = true;
             catch
                 % 接続できない時は諦める。
+            end
+        end
+    end
+end
+
+%%
+this_layer_line_handles = find_system(this_layer, ...
+    'LookUnderMasks', 'all', ...
+    'SearchDepth', 1, ...
+    'FindAll', 'on', ...
+    'type', 'line');
+
+line_names = cell(numel(this_layer_line_handles), 1);
+line_prop_names = cell(numel(this_layer_line_handles), 1);
+line_src_handles = cell(numel(this_layer_line_handles), 1);
+for i = 1:numel(line_names)
+    line_src_handles{i} = get_param(this_layer_line_handles(i), 'SrcPortHandle');
+    if (line_src_handles{i} > 0)
+        line_prop_names{i} = get_param(line_src_handles{i}, ...
+            'PropagatedSignals');
+        line_names{i} = get_param(this_layer_line_handles(i), 'Name');
+    else
+        line_src_handles{i} = -1;
+        line_names{i} = '';
+    end
+    
+end
+
+%%
+for i = 1:size(disconnected_inport_list, 1)
+    if ~line_connected_flag(i)
+        for j = 1:numel(line_names)
+            if (strcmp(inport_names{i}, line_names{j}) || ...
+                strcmp(inport_names{i}, line_prop_names{j}))
+                try
+                    add_line(this_layer, ...
+                        line_src_handles{j}, ...
+                        disconnected_inport_list{i, 3}, ...
+                        'autorouting','smart');
+                catch
+
+                end
             end
         end
     end
@@ -135,83 +184,6 @@ function delete_unconnected_inport_line(inport_handle)
     if (line_handle > -0.5)
         delete_line(line_handle);
     end
-end
-
-function port_names = get_port_names(disconnected_list, ...
-    chart_port_names, MF_port_names)
-port_names  = cell(size(disconnected_list, 1), 1);
-
-for i = 1:numel(port_names)
-    if ~isempty(chart_port_names{i})
-        port_names{i, 1} = chart_port_names{i};
-    elseif ~isempty(MF_port_names{i, 1})
-        port_names{i, 1} = MF_port_names{i, 2}.Name;
-    else
-        block_type = get_param(disconnected_list{i, 1}, 'BlockType');
-        if ( strcmp(block_type, 'SubSystem') || ...
-                strcmp(block_type, 'ModelReference')  )
-
-            if strcmp(disconnected_list{i, 4}, 'Inport')
-                port_names{i, 1} = ...
-                    get_port_name_from_subsystem(disconnected_list, i, 'Inport', ...
-                    block_type);
-            elseif strcmp(disconnected_list{i, 4}, 'Outport')
-                port_names{i, 1} = ...
-                    get_port_name_from_subsystem(disconnected_list, i, 'Outport', ...
-                    block_type);
-            else
-                port_names{i, 1} = '';
-            end
-        else
-            try
-                element_name = get_param(disconnected_list{i, 1}, 'Element');
-            catch
-                element_name = '';
-            end
-            if isempty(element_name)
-                text = strsplit(disconnected_list{i, 1}, '/');
-                port_names{i, 1} = text{end};
-            else
-                port_names{i, 1} = element_name;
-            end
-        end
-    end
-end
-
-end
-
-function port_name = get_port_name_from_subsystem( ...
-    disconnected_list, index, port_type, block_type)
-port_name = '';
-
-if strcmp(block_type, 'ModelReference')
-    ref_model_name = get_param(disconnected_list{index, 1}, 'ModelName');
-    lower_port_list = find_system(ref_model_name, ...
-        'SearchDepth', 1, ...
-        'regexp', 'on', 'blocktype', port_type, ...
-        'Port', num2str(disconnected_list{index, 2}));
-else
-    lower_port_list = find_system(disconnected_list{index, 1}, ...
-        'SearchDepth', 1, ...
-        'regexp', 'on', 'blocktype', port_type, ...
-        'Port', num2str(disconnected_list{index, 2}));
-end
-
-if isempty(lower_port_list)
-    return;
-end
-
-if numel(lower_port_list) > 1.5
-    try
-        port_name = get_param(lower_port_list{1}, 'PortName');
-    catch
-        port_name = '';
-    end
-else
-    text = strsplit(string(lower_port_list), '/');
-    port_name = text{end};
-end
-
 end
 
 function MF_block_info = get_MF_block_info(this_system)

@@ -59,6 +59,7 @@ if numel(model_name_temp) < 1.5
 end
 
 harness_name_temp = [this_harness_name, '____temporary____'];
+harness_name_temp = round_long_harness_name_tshintaiCustomTab(harness_name_temp);
 sltest.harness.create(harness_owner_name, 'Name', harness_name_temp, ...
     'CreateWithoutCompile', true);
 sltest.harness.load(harness_owner_name, harness_name_temp);

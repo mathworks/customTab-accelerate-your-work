@@ -124,7 +124,7 @@
             "text": "ルート実行",
             "icon": "guaranteed-to-run_icon",
             "description": "このモデルファイルを参照している最上位階層のモデルファイルを実行します",
-            "command": "root_run_tshintaiCustomTab",
+            "command": "root_run_wrapper_tshintaiCustomTab",
             "commandType": "Script"
         },
         {
@@ -278,6 +278,15 @@
             "icon": "flowchart_icon",
             "description": "信号線が接続されていない入出力ポートを、同じ名前のポートに接続します",
             "command": "connect_same_port_names_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "create_harness_with_input",
+            "text": "入力を継承してテストハーネスを作成",
+            "icon": "flowchart_icon",
+            "description": "最上位階層を実行した時に得られる入力データを継承してテストハーネスを作成します",
+            "command": "create_test_harness_with_input_tshintaiCustomTab",
             "commandType": "Script"
         },
         {

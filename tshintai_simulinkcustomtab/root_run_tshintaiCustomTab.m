@@ -1,13 +1,40 @@
-function root_run_tshintaiCustomTab()
+function simout = root_run_tshintaiCustomTab(sim_command_flag)
 %% 説明
 % モデルを参照している参照構造の最上位階層のモデルを実行します。
 % 最上位階層のモデルが複数ある場合、ダイアログで選択します。
 % 上位階層のモデルが閉じられている場合は、検索されません。
 %%
+simout = '';
+if (nargin < 0.5)
+    sim_command_flag = false;
+end
+
+%%
+% RoadRunner用の「Simulink.ScenarioSimulation」変数がある場合、
+% RoadRunnerを実行する。
+COMMA = char(39);
+var_list = evalin('base', 'who;');
+for i = 1:numel(var_list)
+    command_text = ['isa(', var_list{i}, ', ', COMMA, ...
+                    'Simulink.ScenarioSimulation', COMMA, ');'];
+    rr_flag = evalin('base', command_text);
+    if (rr_flag)
+        run_rr_text = [var_list{i}, '.set(', ...
+            COMMA, 'SimulationCommand', COMMA, ...
+            ', ', COMMA, 'Start', COMMA, ');'];
+        evalin('base', run_rr_text);
+
+        simout = var_list{i};
+
+        return;
+    end
+end
+
+%%
 child_model_name = bdroot;
 if strcmp(get_param(child_model_name, "IsHarness"), 'on')
     % テストハーネスモデルの場合、そのモデルを実行
-    set_param(child_model_name, 'SimulationCommand', 'start');
+    simout = run_model(child_model_name, sim_command_flag);
     return;
 else
     child_model_info = Simulink.MDLInfo(child_model_name);
@@ -21,7 +48,7 @@ other_models_name = loaded_models_name(~strcmp(loaded_models_name, ...
 
 if (numel(other_models_name) < 1)
     if strcmp(child_model_info.BlockDiagramType, 'Model')
-        set_param(child_model_name, 'SimulationCommand', 'start');
+        simout = run_model(child_model_name, sim_command_flag);
     end
     return;
 end
@@ -32,7 +59,7 @@ if strcmp(child_model_info.BlockDiagramType, 'Model')
         other_models_name, child_model_name);
 
     if (numel(related_model_name) < 1)
-        set_param(child_model_name, 'SimulationCommand', 'start');
+        simout = run_model(child_model_name, sim_command_flag);
         return;
     end
 
@@ -78,12 +105,12 @@ if (numel(root_model_index) > 1)
         return;
     end
 
-    set_param(related_model_name{RM_indx}, 'SimulationCommand', 'start');
+    simout = run_model(related_model_name{RM_indx}, sim_command_flag);
 
 else
 
-    set_param(related_model_name{root_model_index(1)}, ...
-        'SimulationCommand', 'start');
+    simout = run_model(related_model_name{root_model_index(1)}, ...
+        sim_command_flag);
 
 end
 
@@ -139,6 +166,17 @@ else
     % サブシステムと被っているモデル名を外す
     related_model_name = related_model_name(valid_model_flag);
     related_model_name = unique(related_model_name);
+end
+
+end
+
+function simout = run_model(model_name, sim_command_flag)
+
+if sim_command_flag
+    simout = sim(model_name);
+else
+    set_param(model_name, 'SimulationCommand', 'start');
+    simout = '';
 end
 
 end

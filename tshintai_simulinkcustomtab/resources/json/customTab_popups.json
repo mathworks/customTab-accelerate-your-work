@@ -52,6 +52,16 @@
                     "action": "reset_color_tab"
                 }
             ]
+        },
+        {
+            "type": "PopupList",
+            "id": "create_test_harness",
+            "children": [
+                {
+                    "type": "ListItem",
+                    "action": "create_harness_with_input"
+                }
+            ]
         }
     ]
 }

@@ -14,6 +14,7 @@ function create_open_test_harness_tshintaiCustomTab()
 model_name = bdroot;
 system_name = gcs;
 selected_block_list = find_system(system_name, ...
+    'LookUnderMasks', 'all', ...
     'SearchDepth', 1, ...
     'Selected','on');
 
@@ -29,7 +30,7 @@ if isempty(selected_block_list)
 
     if isempty(harness_list)
 
-        harness_name = [system_name, '_harness'];
+        harness_name = round_harness_name([system_name, '_harness']);
         create_open_new_harness(model_name, system_name, harness_name, 0);
 
     elseif numel(harness_list) == 1
@@ -56,6 +57,7 @@ else
 
             block_name = get_param(selected_block_list{1}, 'Name');
             harness_name = replace_bad_names([block_name, '_harness']);
+            harness_name = round_harness_name(harness_name);
             create_open_new_harness(model_name, selected_block_list{1}, ...
                 harness_name{1}, subsystem_type);
 
@@ -78,6 +80,7 @@ else
         if isempty(harness_list)
 
             harness_name = replace_bad_names([subsystem_ref_name, '_harness']);
+            harness_name = round_harness_name(harness_name);
             create_open_new_harness(model_name, subsystem_ref_name, ...
                 harness_name{1}, subsystem_type);
 
@@ -102,6 +105,7 @@ else
         if isempty(harness_list)
 
             harness_name = replace_bad_names([ref_model_name, '_harness']);
+            harness_name = round_harness_name(harness_name);
             create_open_new_harness(ref_model_name, ref_model_name, ...
                 harness_name{1}, subsystem_type);
 
@@ -144,6 +148,7 @@ else
             subsystem_path, subsystem_name);
 
         harness_name = replace_bad_names([subsystem_name, '_harness']);
+        harness_name = round_harness_name(harness_name);
         create_open_new_harness(model_name, subsystem_name, ...
             harness_name{1}, 2);
     end
@@ -190,7 +195,8 @@ set_param(harness_name, 'ShowLineDimensions', 'on');
 
 %%
 inport_list = find_system(harness_name, ...
-    'SearchDepth',1, ...
+    'LookUnderMasks', 'all', ...
+    'SearchDepth', 1, ...
     'regexp', 'on', 'blocktype', 'Inport');
 
 for i = 1:numel(inport_list)
@@ -214,7 +220,8 @@ end
 
 %%
 outport_list = find_system(harness_name, ...
-    'SearchDepth',1, ...
+    'LookUnderMasks', 'all', ...
+    'SearchDepth', 1, ...
     'regexp', 'on', 'blocktype', 'Outport');
 
 for i = 1:numel(outport_list)
@@ -281,6 +288,16 @@ for i = 1:numel(block_list)
     name = strrep(name, ' ', '_');
     name = strrep(name, '-', '_');
     rep_block_list{i} = name;
+end
+
+end
+
+function harness_name = round_harness_name(harness_name)
+
+if (length(harness_name) >= 58)
+    harness_name_temp = string(harness_name);
+    del_pos = length(harness_name) - 57;
+    harness_name = char(harness_name_temp.extractAfter(del_pos));
 end
 
 end
