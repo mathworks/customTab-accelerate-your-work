@@ -15,7 +15,8 @@ loaded_models_name = arrange_list(loaded_models_name);
 other_models_name = loaded_models_name(~strcmp(loaded_models_name, ...
     top_model_name));
 
-[ref_model_name, ~] = find_mdlrefs(top_model_name);
+[ref_model_name, ~] = find_mdlrefs(top_model_name, ...
+            'MatchFilter', @Simulink.match.activeVariants);
 ref_model_name = arrange_list(ref_model_name);
 
 ref_model_list = ref_model_name(~strcmp(ref_model_name, top_model_name));
