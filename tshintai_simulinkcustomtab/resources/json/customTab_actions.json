@@ -290,6 +290,15 @@
             "commandType": "Script"
         },
         {
+            "type": "Action",
+            "id": "set_line_name_and_log",
+            "text": "信号線を名付",
+            "icon": "flowchart_icon",
+            "description": "選択した信号線の名前を変更し、ログ設定を行います",
+            "command": "set_line_name_and_log_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
             "type": "Icon",
             "id": "openMathWorksWebsiteIcon",
             "icon16": "MathWorks_icon_16.png",

@@ -91,6 +91,10 @@
                                 {
                                     "type": "PushButton",
                                     "action": "match_port_to_line_name"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "set_line_name_and_log"
                                 }
                             ]
                         }
