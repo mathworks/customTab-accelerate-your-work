@@ -287,6 +287,22 @@ edit match_port_line_name_tshintaiCustomTab
 edit match_port_to_line_name_tshintaiCustomTab
 ```
 
+### 2.12.「信号線を名付」ボタン
+
+
+選択した信号線に名前を付け、シミュレーションデータインスペクターにログする設定を行う。
+
+
+
+
+名前を入力しなかった場合、その信号線の名前を消し、ログ設定を解除する。
+
+
+
+```matlab:Code
+edit set_line_name_and_log_tshintaiCustomTab
+```
+
 ## 3.ライブラリ セクション
 ### 3.1.「ライブラリを開く」ボタン
 
