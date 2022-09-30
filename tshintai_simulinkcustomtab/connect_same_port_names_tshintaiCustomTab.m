@@ -33,9 +33,13 @@ end
 % Stateflowブロックかどうかのフラグを記録する。
 ThisMachine = find(sfroot, '-isa', 'Stateflow.Machine', ...
                           'Name', bdroot);
-chart_list = find(ThisMachine, '-isa', 'Stateflow.Chart', ...
-    '-or', '-isa', 'Stateflow.TruthTableChart', ...
-    '-or', '-isa', 'Stateflow.StateTransitionTableChart');
+if ~isempty(ThisMachine)
+    chart_list = find(ThisMachine, '-isa', 'Stateflow.Chart', ...
+        '-or', '-isa', 'Stateflow.TruthTableChart', ...
+        '-or', '-isa', 'Stateflow.StateTransitionTableChart');
+else
+    chart_list = '';
+end
 
 chart_inport_names  = cell(size(disconnected_inport_list, 1), 1);
 chart_outport_names = cell(size(all_outport_list, 1), 1);
