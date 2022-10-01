@@ -176,8 +176,15 @@ end
 function delete_unconnected_outport_line(outport_handle)
     line_handle = get_param(outport_handle, 'Line');
     if (line_handle > -0.5)
-        dst_block_name = get_param(line_handle, 'DstBlock');
-        if isempty(dst_block_name)
+        dst_block_handle = get_param(line_handle, 'DstBlockHandle');
+        line_connected = false;
+        for i = 1:numel(dst_block_handle)
+            if (dst_block_handle >= 0)
+                line_connected = true;
+            end
+        end
+
+        if ~line_connected
             delete_line(line_handle);
         end
     end
