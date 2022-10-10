@@ -329,8 +329,8 @@ for i = 1:numel(MF_block_info)
 
     for j = 1:numel(inport_object)
         line_handle = get_param(MF_port_handles.Inport(j), 'Line');
-        if ~isempty(line_handle)
-            line_name = get_param(line_handle, 'Name');
+        if (line_handle > -0.5)
+            line_name = get_source_line_name(line_handle);
             if ~isempty(line_name)
                 inport_object(j).Name = line_name;
             end
@@ -339,8 +339,8 @@ for i = 1:numel(MF_block_info)
 
     for j = 1:numel(outport_object)
         line_handle = get_param(MF_port_handles.Outport(j), 'Line');
-        if ~isempty(line_handle)
-            line_name = get_param(line_handle, 'Name');
+        if (line_handle > -0.5)
+            line_name = get_source_line_name(line_handle);
             if ~isempty(line_name)
                 outport_object(j).Name = line_name;
             end
@@ -357,6 +357,22 @@ old_line_name = get_param(line_handle, 'Name');
 
 if ~strcmp(new_line_name, old_line_name)
     set_param(line_handle, 'Name', new_line_name);
+end
+
+end
+
+function line_name = get_source_line_name(line_handle)
+
+src_port_handle = get_param(line_handle, 'SrcPortHandle');
+if (src_port_handle > -0.5)
+    prop_name = get_param(src_port_handle, 'PropagatedSignals');
+    if ~isempty(prop_name)
+        line_name = prop_name;
+    else
+        line_name = get_param(line_handle, 'Name');
+    end
+else
+    line_name = '';
 end
 
 end

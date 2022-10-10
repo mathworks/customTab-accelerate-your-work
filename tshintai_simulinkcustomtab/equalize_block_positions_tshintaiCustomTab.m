@@ -10,6 +10,8 @@ function equalize_block_positions_tshintaiCustomTab()
 % また、ブロックを一つだけ選択した場合は、そのブロックが
 % Inportのみ、またはOutportのみ存在する場合に、その1番目のポートから
 % 繋がる先のブロックの間隔を調整する。
+% ブロックが3個以上選択されている時、選択されている中で最も上の方にある
+% 二つを自動的に選択して、ブロックの間隔を調整する。
 %%
 current_layer = gcs;
 selected_block_list = find_system(current_layer, ...
@@ -29,7 +31,8 @@ if strcmp(selected_block_list{1}, current_layer)
 end
 
 if numel(selected_block_list) > 2.5
-    return;
+    top_two_blocks_list = get_top_two_blocks(selected_block_list);
+    selected_block_list = top_two_blocks_list;
 end
 
 if numel(selected_block_list) < 1.5
@@ -87,6 +90,21 @@ end
 
 end
 
+
+function top_two_blocks_list = get_top_two_blocks(block_list)
+
+block_Y_positions = zeros(numel(block_list), 1);
+for i = 1:numel(block_list)
+    block_position = get_param(block_list{i}, 'Position');
+    block_Y_positions(i) = block_position(2);
+end
+
+[~, sorted_index] = sort(block_Y_positions);
+
+top_two_blocks_list = {block_list{sorted_index(1)}; ...
+                       block_list{sorted_index(2)}};
+
+end
 
 function block_pair = get_connected_block_pair(block_list, current_layer)
 block_pair = '';

@@ -40,7 +40,7 @@ MATLAB の現在のフォルダーを「tshintai_simulinkcustomtab」フォル�
 
 
 
-![image_0.png](ReadMe_images/image_0.png)
+![image_0.png](README_images/image_0.png)
 
 
 # カスタムタブを無効化
@@ -62,7 +62,7 @@ MATLAB の現在のフォルダーを「tshintai_simulinkcustomtab」フォル�
 
 
 
-![image_1.png](ReadMe_images/image_1.png)
+![image_1.png](README_images/image_1.png)
 
 
 ## 1.SLDD セクション
@@ -184,6 +184,11 @@ edit arrange_port_position_tshintaiCustomTab
 
 
 また、ブロックを一つだけ選択した場合は、そのブロックがInportのみ、またはOutportのみ存在する場合に、その1番目のポートから繋がる先のブロックの間隔を調整する。
+
+
+
+
+ブロックが3個以上選択されている時、選択されている中で最も上の方にある二つを自動的に選択して、ブロックの間隔を調整する。
 
 
 
@@ -544,7 +549,7 @@ edit revert_Simulink_model_tshintaiCustomTab
 
 
 
-![image_2.png](ReadMe_images/image_2.png)
+![image_2.png](README_images/image_2.png)
 
 
 
@@ -560,7 +565,7 @@ edit revert_Simulink_model_tshintaiCustomTab
 
 
 
-![image_3.png](ReadMe_images/image_3.png)
+![image_3.png](README_images/image_3.png)
 
 
 ## 3.パスを設定する
@@ -571,7 +576,7 @@ edit revert_Simulink_model_tshintaiCustomTab
 
 
 
-![image_4.png](ReadMe_images/image_4.png)
+![image_4.png](README_images/image_4.png)
 
 
 
@@ -587,7 +592,7 @@ edit revert_Simulink_model_tshintaiCustomTab
 
 
 
-![image_5.png](ReadMe_images/image_5.png)
+![image_5.png](README_images/image_5.png)
 
 
 ## 5.シャットダウン時に無効化する
@@ -598,7 +603,7 @@ edit revert_Simulink_model_tshintaiCustomTab
 
 
 
-![image_6.png](ReadMe_images/image_6.png)
+![image_6.png](README_images/image_6.png)
 
 
   

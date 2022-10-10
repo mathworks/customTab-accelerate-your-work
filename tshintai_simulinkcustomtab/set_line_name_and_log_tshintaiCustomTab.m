@@ -14,7 +14,17 @@ selected_line_list = find_system(this_system,...
     'Selected','on');
 
 %%
+src_port_handles = zeros(numel(selected_line_list), 1);
 for i = 1:numel(selected_line_list)
+    src_port_handles(i) = get_param(selected_line_list(i), ...
+        'SrcPortHandle');
+end
+
+% 同じポートから出ている信号線に対しては1回だけダイアログを表示するようにするため、
+% ここで同じポートの信号は省く
+[~, s_line_index] = unique(src_port_handles);
+
+for i = (s_line_index)'
     src_port_handle = get_param(selected_line_list(i), ...
         'SrcPortHandle');
     if (src_port_handle > -0.5)
