@@ -50,6 +50,10 @@
                 {
                     "type": "ListItem",
                     "action": "reset_color_tab"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "reset_zoom_level"
                 }
             ]
         },

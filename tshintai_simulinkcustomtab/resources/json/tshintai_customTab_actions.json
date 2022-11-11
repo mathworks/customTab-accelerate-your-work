@@ -299,6 +299,15 @@
             "commandType": "Script"
         },
         {
+            "type": "Action",
+            "id": "reset_zoom_level",
+            "text": "キャンバスをフィット",
+            "icon": "flowchart_icon",
+            "description": "全ての階層のズームレベルを調整してブロックが丁度収まるようにします",
+            "command": "reset_zoom_level_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
             "type": "Icon",
             "id": "openMathWorksWebsiteIcon",
             "icon16": "MathWorks_icon_16.png",

@@ -64,6 +64,14 @@ else
 
     if ( (numel(selected_block_list) > 1.5) && ...
             strcmp(selected_block_list{1}, this_layer) )
+
+        % バリアントサブシステムの中のブロックを一致させる場合は、
+        % 上手く選択したブロックを抽出できないので
+        % ブロックを合わせる機能は実行しない
+        if strcmp(get_param(selected_block_list{1}, 'Variant'), 'on')
+            error('バリアントサブシステムの中のブロックは操作できません。');
+        end
+
         selected_block_list = selected_block_list(2:end);
     elseif numel(selected_block_list) > 0.5
         if strcmp(selected_block_list{1}, this_layer)

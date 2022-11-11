@@ -122,6 +122,17 @@ edit show_line_data_types_dimensions_tshintaiCustomTab
 edit reset_model_color_and_close_tab_tshintaiCustomTab
 ```
 
+### 2.1.3.「キャンバスをフィット」ボタン
+
+
+モデル内の全てのサブシステム階層のズームレベルを、キャンバス内のブロックが丁度全部見える状態にフィットさせる。
+
+
+
+```matlab:Code
+edit reset_zoom_level_tshintaiCustomTab
+```
+
 ### 2.2.「設定を開く」ボタン
 
 
