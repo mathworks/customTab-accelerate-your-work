@@ -16,9 +16,13 @@ MF_block_info = find(bd_object, "-isa", "Stateflow.EMChart");
 % Stateflowブロックに対しては実行しない
 ThisMachine = find(sfroot, '-isa', 'Stateflow.Machine', ...
                           'Name', top_model_name);
-chart_list = find(ThisMachine, '-isa', 'Stateflow.Chart', ...
+if isempty(ThisMachine)
+    chart_list = '';
+else
+    chart_list = find(ThisMachine, '-isa', 'Stateflow.Chart', ...
     '-or', '-isa', 'Stateflow.TruthTableChart', ...
     '-or', '-isa', 'Stateflow.StateTransitionTableChart');
+end
 
 %%
 top_model_tabbed = false;
