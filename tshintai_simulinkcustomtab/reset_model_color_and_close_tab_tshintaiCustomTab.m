@@ -3,7 +3,8 @@ function reset_model_color_and_close_tab_tshintaiCustomTab()
 % モデル内のブロックの色をリセットし、タブを全て閉じます。
 %%
 model_name = bdroot;
-block_list = find_system(model_name);
+block_list = find_system(model_name, ...
+    'MatchFilter', @Simulink.match.activeVariants);
 
 open_system(model_name);
 

@@ -7,7 +7,8 @@ function log_named_line_tshintaiCustomTab()
 % ログ無効化します。
 %%
 model_name = bdroot;
-block_list = find_system(model_name);
+block_list = find_system(model_name, ...
+    'MatchFilter', @Simulink.match.activeVariants);
 
 if numel(block_list) < 1
     return;
