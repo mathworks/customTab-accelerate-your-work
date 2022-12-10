@@ -48,6 +48,10 @@ port_name = '';
 
 if strcmp(block_type, 'ModelReference')
     ref_model_name = get_param(disconnected_list{index, 1}, 'ModelName');
+    % 参照先モデルが読み込まれていないとエラーになるため、
+    % ここで読み込んでおく。
+    load_system(ref_model_name);
+
     lower_port_list = find_system(ref_model_name, ...
         'MatchFilter', @Simulink.match.activeVariants, ...
         'LookUnderMasks', 'all', ...
