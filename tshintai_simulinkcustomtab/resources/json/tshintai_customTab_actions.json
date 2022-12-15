@@ -308,6 +308,30 @@
             "commandType": "Script"
         },
         {
+            "type": "Action",
+            "id": "insert_template_action",
+            "text": "テンプレ挿入",
+            "icon": "circuit_icon"
+        },
+        {
+            "type": "Action",
+            "id": "create_bus_source",
+            "text": "非バーチャルバスを作成",
+            "icon": "circuit_icon",
+            "description": "ConstantとBus Assignmentブロックを使った非バーチャルバスのテンプレートを作成します",
+            "command": "create_bus_source_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "create_mux_source",
+            "text": "ベクトルを作成",
+            "icon": "circuit_icon",
+            "description": "ConstantとMuxブロックを使ったベクトル信号のテンプレートを作成します",
+            "command": "create_constant_mux_source_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
             "type": "Icon",
             "id": "openMathWorksWebsiteIcon",
             "icon16": "MathWorks_icon_16.png",

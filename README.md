@@ -342,6 +342,39 @@ edit open_lib_model_linked_to_blocks_tshintaiCustomTab
 edit disable_and_open_lib_block_tshintaiCustomTab
 ```
 
+### 3.3.「テンプレ挿入」リスト
+### 3.3.1.「非バーチャルバスを作成」ボタン
+
+
+ConstantブロックとBus Assignmentブロックを使って非バーチャルバス信号を構築する。
+
+
+
+
+ベースワークスペース、モデルワークスペース、slddのいずれかに格納されているバスオブジェクトをデータ型に指定できる。
+
+
+
+```matlab:Code
+edit create_bus_source_tshintaiCustomTab
+```
+
+### 3.3.2.「ベクトルを作成」ボタン
+
+
+ConstantブロックとMuxブロックを組み合わせたベクトル信号を構築する。
+
+
+
+
+ダイアログに入力された数値に合わせてベクトルの配列数を調整する。
+
+
+
+```matlab:Code
+edit create_constant_mux_source_tshintaiCustomTab
+```
+
 ## 4.テストハーネス セクション
 ### 4.1.1.「作成 / 開く」ボタン
 

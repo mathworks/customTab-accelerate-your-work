@@ -114,6 +114,11 @@
                                 {
                                     "type": "PushButton",
                                     "action": "disable_and_open_lib_block"
+                                },
+                                {
+                                    "type": "DropDownButton",
+                                    "action": "insert_template_action",
+                                    "popupName": "insert_template"
                                 }
                             ]
                         }

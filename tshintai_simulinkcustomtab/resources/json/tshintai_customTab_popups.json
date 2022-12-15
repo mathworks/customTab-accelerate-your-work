@@ -66,6 +66,20 @@
                     "action": "create_harness_with_input"
                 }
             ]
+        },
+        {
+            "type": "PopupList",
+            "id": "insert_template",
+            "children": [
+                {
+                    "type": "ListItem",
+                    "action": "create_bus_source"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "create_mux_source"
+                }
+            ]
         }
     ]
 }
