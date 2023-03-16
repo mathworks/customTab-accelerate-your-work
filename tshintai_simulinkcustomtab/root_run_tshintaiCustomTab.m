@@ -79,7 +79,8 @@ related_score = zeros(numel(related_model_name), 1);
 
 for i = 1:numel(related_model_name)
     
-    [ref_model_name, ~] = find_mdlrefs(related_model_name{i});
+    [ref_model_name, ~] = find_mdlrefs(related_model_name{i}, ...
+                            'MatchFilter', @Simulink.match.activeVariants);
     ref_model_name = ref_model_name(~strcmp(ref_model_name, ...
                                             related_model_name{i}));
 
@@ -123,7 +124,8 @@ function related_model_name = find_model_referencing(...
 related = false(numel(other_models_name), 1);
 for i = 1:numel(other_models_name)
 
-    [ref_model_name, ~] = find_mdlrefs(other_models_name{i});
+    [ref_model_name, ~] = find_mdlrefs(other_models_name{i}, ...
+                            'MatchFilter', @Simulink.match.activeVariants);
     find_name = ref_model_name(strcmp(ref_model_name, child_model_name));
 
     if ~isempty(find_name)
