@@ -665,6 +665,11 @@ GitHubからクローンしている場合には、以下の該当バージョ�
   
 
 
+R2022b: [v3.3](https://github.com/mathworks/customTab-accelerate-your-work/archive/refs/tags/v3.3.zip)
+
+
+
+
 R2022a: [v2.6.1](https://github.com/mathworks/customTab-accelerate-your-work/archive/refs/tags/v2.6.1.zip)
 
 
@@ -676,6 +681,6 @@ R2021b: [v1.2](https://github.com/mathworks/customTab-accelerate-your-work/archi
   
 
 
-* Copyright 2022 The MathWorks, Inc.*
+* Copyright 2023 The MathWorks, Inc.*
 
 
