@@ -332,6 +332,15 @@
             "commandType": "Script"
         },
         {
+            "type": "Action",
+            "id": "show_specific_signal",
+            "text": "ログを可視化",
+            "icon": "graph_icon",
+            "description": "SDIにログされた信号を選択して可視化します",
+            "command": "show_specific_signal_in_SDI_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
             "type": "Icon",
             "id": "openMathWorksWebsiteIcon",
             "icon16": "MathWorks_icon_16.png",
