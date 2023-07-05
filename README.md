@@ -452,8 +452,19 @@ edit auto_connect_ports_in_test_harness_tshintaiCustomTab
 edit root_run_tshintaiCustomTab
 ```
 
-### 5.2.「View設定」ボタン
-### 5.2.1.「Viewを保存」ボタン
+### 5.2.「ログを可視化」ボタン
+
+
+シミュレーションデータインスペクターにログされた最新の実行結果から、可視化できる信号を選択して可視化します。
+
+
+
+```matlab:Code
+edit show_specific_signal_in_SDI_tshintaiCustomTab
+```
+
+### 5.3.「View設定」ボタン
+### 5.3.1.「Viewを保存」ボタン
 
 
 今のシミュレーションデータインスペクターのViewをファイルに保存する。ファイル名にはモデル名を含める。
@@ -469,7 +480,7 @@ edit root_run_tshintaiCustomTab
 edit save_this_SDI_view_tshintaiCustomTab
 ```
 
-### 5.2.2.「Viewを読み込み」ボタン
+### 5.3.2.「Viewを読み込み」ボタン
 
 
 「Viewを保存」で保存された、モデル名に紐づいた設定ファイルを読み込む。
@@ -480,7 +491,7 @@ edit save_this_SDI_view_tshintaiCustomTab
 edit load_this_model_view_tshintaiCustomTab
 ```
 
-### 5.3.「名前付信号をログ」ボタン
+### 5.4.「名前付信号をログ」ボタン
 
 
 ブロックに接続されていて、かつ名前が付いている信号線をシミュレーションデータインスペクターにログするように設定する。また、Simscape変数のログ設定のOn, Offの切り替えも行う。
@@ -496,7 +507,7 @@ edit load_this_model_view_tshintaiCustomTab
 edit log_named_line_tshintaiCustomTab
 ```
 
-### 5.4.「初期化」ボタン
+### 5.5.「初期化」ボタン
 
 
 シミュレーションデータインスペクターの環境設定とアーカイブを初期化する。
