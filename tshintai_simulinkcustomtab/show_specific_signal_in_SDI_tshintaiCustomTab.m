@@ -1,7 +1,7 @@
 function show_specific_signal_in_SDI_tshintaiCustomTab()
 %% 説明
 % シミュレーションデータインスペクターに
-% ログされた変数を選択して可視化します。
+% ログされた変数を選択して可視化する。
 %%
 PARAMETER = struct;
 PARAMETER.MAX_ROW = 2;
@@ -53,6 +53,17 @@ end
 
 selected_signal_info = signal_info(RM_indx, :);
 selected_signal_num = numel(RM_indx);
+
+%%
+% 信号数に応じてMAX_ROWを調整する
+if (selected_signal_num == 2)
+    PARAMETER.MAX_ROW = 1;
+    PARAMETER.MAX_PLOT_INDEX = PARAMETER.MAX_COLUMN * PARAMETER.MAX_ROW;
+end
+if (selected_signal_num >= 9)
+    PARAMETER.MAX_ROW = 3;
+    PARAMETER.MAX_PLOT_INDEX = PARAMETER.MAX_COLUMN * PARAMETER.MAX_ROW;
+end
 
 %%
 Simulink.sdi.clearAllSubPlots;
