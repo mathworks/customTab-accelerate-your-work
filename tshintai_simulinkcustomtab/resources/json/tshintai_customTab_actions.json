@@ -341,6 +341,15 @@
             "commandType": "Script"
         },
         {
+            "type": "Action",
+            "id": "resize_display_block",
+            "text": "Displayをリサイズ",
+            "icon": "graph_icon",
+            "description": "Displayブロックのサイズを、可視化する信号の全ての値が丁度見える大きさに変更します",
+            "command": "resize_display_block_tshintaiCustomTab",
+            "commandType": "Script"
+        },
+        {
             "type": "Icon",
             "id": "openMathWorksWebsiteIcon",
             "icon16": "MathWorks_icon_16.png",

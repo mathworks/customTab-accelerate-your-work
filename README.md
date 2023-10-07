@@ -38,7 +38,7 @@ MATLAB の現在のフォルダーを「tshintai_simulinkcustomtab」フォル�
 
 「ACCEL」タブに配置されているオリジナルボタンの機能について紹介する。
 
-<p style="text-align:left"><img src="README_media/image_1.png" width="769" alt="image_1.png"></p>
+<p style="text-align:left"><img src="README_media/image_1.png" width="767" alt="image_1.png"></p>
 
 ## 1.SLDD セクション
 ### 1.1.「作成 / 開く」ボタン
@@ -287,13 +287,20 @@ edit root_run_tshintaiCustomTab
 ```
 ### 5.2.「ログを可視化」ボタン
 
-シミュレーションデータインスペクターにログされた最新の実行結果から、可視化できる信号を選択して可視化します。
+シミュレーションデータインスペクターにログされた最新の実行結果から、可視化できる信号を選択して可視化する。
 
 ```matlab
 edit show_specific_signal_in_SDI_tshintaiCustomTab
 ```
-### 5.3.「View設定」ボタン
-### 5.3.1.「Viewを保存」ボタン
+### 5.3.「Displayをリサイズ」ボタン
+
+モデル内に存在するDisplayブロックのサイズを、接続されている信号の次元に合わせて、信号の数値が全て見えるサイズに変更する。
+
+```matlab
+edit resize_display_block_tshintaiCustomTab
+```
+### 5.4.「View設定」ボタン
+### 5.4.1.「Viewを保存」ボタン
 
 今のシミュレーションデータインスペクターのViewをファイルに保存する。ファイル名にはモデル名を含める。
 
@@ -303,14 +310,14 @@ edit show_specific_signal_in_SDI_tshintaiCustomTab
 ```matlab
 edit save_this_SDI_view_tshintaiCustomTab
 ```
-### 5.3.2.「Viewを読み込み」ボタン
+### 5.4.2.「Viewを読み込み」ボタン
 
 「Viewを保存」で保存された、モデル名に紐づいた設定ファイルを読み込む。
 
 ```matlab
 edit load_this_model_view_tshintaiCustomTab
 ```
-### 5.4.「名前付信号をログ」ボタン
+### 5.5.「名前付信号をログ」ボタン
 
 ブロックに接続されていて、かつ名前が付いている信号線をシミュレーションデータインスペクターにログするように設定する。また、Simscape変数のログ設定のOn, Offの切り替えも行う。
 
@@ -320,7 +327,7 @@ edit load_this_model_view_tshintaiCustomTab
 ```matlab
 edit log_named_line_tshintaiCustomTab
 ```
-### 5.5.「初期化」ボタン
+### 5.6.「初期化」ボタン
 
 シミュレーションデータインスペクターの環境設定とアーカイブを初期化する。
 

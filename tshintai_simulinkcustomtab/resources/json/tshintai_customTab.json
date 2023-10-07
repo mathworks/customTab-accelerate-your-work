@@ -161,11 +161,11 @@
                                 },
                                 {
                                     "type": "PushButton",
-                                    "action": "openSimDataInspectorAction"
+                                    "action": "show_specific_signal"
                                 },
                                 {
                                     "type": "PushButton",
-                                    "action": "show_specific_signal"
+                                    "action": "resize_display_block"
                                 }
 
                             ]
