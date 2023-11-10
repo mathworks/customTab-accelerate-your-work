@@ -125,7 +125,8 @@ else
     else
         % 通常のブロックの場合、
         % 参照サブシステムを作成してからテストハーネスを作成する
-        save_system(model_name, [], 'OverwriteIfChangedOnDisk', true);
+        save_system(model_name, [], 'OverwriteIfChangedOnDisk', true, ...
+            'SaveDirtyReferencedModels', 'on');
 
         block_handle = get_param(selected_block_list{1}, 'Handle');
         parent_name  = get_param(selected_block_list{1}, 'Parent');

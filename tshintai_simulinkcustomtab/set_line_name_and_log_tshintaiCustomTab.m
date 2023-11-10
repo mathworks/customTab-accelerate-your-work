@@ -4,6 +4,8 @@ function set_line_name_and_log_tshintaiCustomTab()
 % にログする設定を行う。
 % 名前を入力しなかった場合、その信号線の名前を消し、
 % ログ設定を解除する。
+% 名前の後にスペースとnを入れると、ログ設定をせずに
+% 名前だけ変更する。
 %%
 this_system = gcs;
 selected_line_list = find_system(this_system,...
@@ -51,10 +53,17 @@ for i = (s_line_index)'
                     selected_line_list(i), 'off');
             end
         else
-            set_param(selected_line_list(i), ...
-                            'Name', answer{1});
-            Simulink.sdi.markSignalForStreaming(...
+            if endsWith(answer{1}, " n")
+                split_text = strsplit(answer{1}, " n");
+                line_name = split_text{1};
+                set_param(selected_line_list(i), ...
+                    'Name', line_name);
+            else
+                set_param(selected_line_list(i), ...
+                    'Name', answer{1});
+                Simulink.sdi.markSignalForStreaming(...
                     selected_line_list(i), 'on');
+            end
         end
     end
 end
